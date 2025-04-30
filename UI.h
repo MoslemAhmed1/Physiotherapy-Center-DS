@@ -139,8 +139,9 @@ public:
 			break;
 		}
 	}
-
 	// returns the file name
 	string getFileName() { return fileName; }
+	// Sets File Name
+	void setFileName(string name) { fileName = name; }
 
 };

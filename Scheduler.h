@@ -41,6 +41,7 @@ private:
 	ArrayStack<Patient*> finishedPatients;
 
 	ifstream inFile;
+	ofstream outFile;
 	UI* pUI;
 
 	int currentTimestep, allPatientsCount;
@@ -130,14 +131,14 @@ public:
 	bool loadInputFile()
 	{
 		pUI->getInputFile();
-		string filename = "Input/";
+		string filename = "";
 		filename += pUI->getFileName();
 		// Reads the filename and appends .txt to it if it has length <= 4 or isn't a text file
 		if (filename.length() <= 4 || filename.substr(filename.length() - 4) != ".txt")
 		{
 			filename.append(".txt");
 		}
-		inFile.open(filename);
+		inFile.open("Input/" + filename);
 
 		// Checks for any failure when reading the file
 		if (inFile.fail() || !inFile.is_open())
@@ -154,7 +155,13 @@ public:
 		// Loads the patients from the file
 		loadPatients();
 
+		pUI->setFileName(filename);
+
 		return true;
+	}
+
+	bool generateOutputFile() {
+
 	}
 
 	void loadDevices()
