@@ -98,5 +98,14 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ElectroTreatment.cpp">
+      <Filter>Header Files\Treatment</Filter>
+    </ClCompile>
+    <ClCompile Include="GymTreatment.cpp">
+      <Filter>Header Files\Treatment</Filter>
+    </ClCompile>
+    <ClCompile Include="UltraTreatment.cpp">
+      <Filter>Header Files\Treatment</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@ class GymResource : public Resource
 
 public:
 
-	GymResource(int cap)
+	GymResource(int cap) : Resource()
 	{
 		currentPatients = 0;
 		capacity = cap;

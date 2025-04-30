@@ -7,7 +7,7 @@ private:
 	static int number;
 
 public:
-	UltrasoundResourse()
+	UltrasoundResourse() : Resource()
 	{
 		RID = number;
 		RType = ULTRASOUND;

@@ -13,9 +13,6 @@
 #include "GymResource.h"
 
 #include "Treatment.h"
-#include "ElectroTreatment.h"
-#include "UltraTreatment.h"
-#include "GymTreatment.h"
 
 #include "Patient.h"
 #include "Definitions.h"
@@ -88,28 +85,80 @@ public:
 			{
 				if (nextPatient->getVT() == currentTimestep)
 				{
+					allPatients.dequeue(nextPatient);
 					nextPatient->setStatus();
+
 					PATIENT_STATUS status = nextPatient->getStatus();
 					int PT = nextPatient->getPT();
 					int VT = nextPatient->getVT();
-					allPatients.dequeue(nextPatient);
+
 					if (status == EARLY)
 					{
 						earlyPatients.enqueue(nextPatient, -PT);
 					}
+
 					else if (status == LATE)
 					{
 						int penalty = (VT - PT) / 2;
 						latePatients.enqueue(nextPatient, -(VT + penalty));
 					}
+
 					else if (status == WAIT)
 					{
-						nextPatient->setPriority(nextPatient->getPT());
-						RandomWaiting(nextPatient);
+						int E_Latency = E_Waiting.getLatency();
+						int U_Latency = U_Waiting.getLatency();
+						int X_Latency = X_Waiting.getLatency();
+
+						nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
+
+						//nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
 					}
 				}
 				else break;
 			}
+
+			nextPatient = nullptr;
+			int leavingTime = 0;
+
+			while (earlyPatients.peek(nextPatient, leavingTime))
+			{
+				leavingTime = -leavingTime;
+				if (leavingTime == currentTimestep)
+				{
+					earlyPatients.dequeue(nextPatient, leavingTime);
+
+					int E_Latency = E_Waiting.getLatency();
+					int U_Latency = U_Waiting.getLatency();
+					int X_Latency = X_Waiting.getLatency();
+
+					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
+
+					//nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
+				}
+				else
+					break;
+			}
+
+			while (latePatients.peek(nextPatient, leavingTime))
+			{
+				leavingTime = -leavingTime;
+				if (leavingTime == currentTimestep)
+				{
+					earlyPatients.dequeue(nextPatient, leavingTime);
+
+					int E_Latency = E_Waiting.getLatency();
+					int U_Latency = U_Waiting.getLatency();
+					int X_Latency = X_Waiting.getLatency();
+
+					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
+
+					//nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
+				}
+				else
+					break;
+			}
+
+
 		}
 
 		// Continue Phase 2 Here
@@ -117,15 +166,77 @@ public:
 
 	}
 
-	void RandomWaiting(Patient* nextPatient)
+	void add_E_waiting(Patient* waitPatient)
 	{
-		nextPatient->setStatus(WAIT);
-		int randomNumber = Facilities::generateRandomNumber(0, 100);
+		PATIENT_STATUS status = waitPatient->getStatus();
+		waitPatient->setStatus(WAIT);
 
-		if (randomNumber < 33) E_Waiting.enqueue_Latency(nextPatient); // here will be the Actual time of treatment 
-		else if (randomNumber < 66) U_Waiting.enqueue_Latency(nextPatient);
-		else X_Waiting.enqueue_Latency(nextPatient);
+		if (status == EARLY || status == WAIT)
+		{
+			waitPatient->setPriority(waitPatient->getPT());
+			E_Waiting.enqueue_Latency(waitPatient);
+		}
+
+		else if (status == LATE)
+		{
+			int priority = waitPatient->getPT() + (waitPatient->getVT() - waitPatient->getPT()) / 2;
+			waitPatient->setPriority(priority);
+			E_Waiting.insertSorted(waitPatient);
+		}
+		else if (status == SERV)
+		{
+			E_Waiting.insertSorted(waitPatient);
+		}
 	}
+
+	void add_U_waiting(Patient* waitPatient)
+	{
+		PATIENT_STATUS status = waitPatient->getStatus();
+		waitPatient->setStatus(WAIT);
+
+		if (status == EARLY || status == WAIT)
+		{
+			waitPatient->setPriority(waitPatient->getPT());
+			U_Waiting.enqueue_Latency(waitPatient);
+		}
+
+		else if (status == LATE)
+		{
+			int priority = waitPatient->getPT() + (waitPatient->getVT() - waitPatient->getPT()) / 2;
+			waitPatient->setPriority(priority);
+			U_Waiting.insertSorted(waitPatient);
+		}
+		else if (status == SERV)
+		{
+			U_Waiting.insertSorted(waitPatient);
+		}
+	}
+
+	void add_X_waiting(Patient* waitPatient)
+	{
+		PATIENT_STATUS status = waitPatient->getStatus();
+		waitPatient->setStatus(WAIT);
+
+		if (status == EARLY || status == WAIT)
+		{
+			waitPatient->setPriority(waitPatient->getPT());
+			X_Waiting.enqueue_Latency(waitPatient);
+		}
+
+		else if (status == LATE)
+		{
+			int priority = waitPatient->getPT() + (waitPatient->getVT() - waitPatient->getPT()) / 2;
+			waitPatient->setPriority(priority);
+			X_Waiting.insertSorted(waitPatient);
+		}
+		else if (status == SERV)
+		{
+			X_Waiting.insertSorted(waitPatient);
+		}
+	}
+
+
+
 
 	bool loadInputFile()
 	{
@@ -210,7 +321,7 @@ public:
 		}
 	}
 
-	~Scheduler() 
+	~Scheduler()
 	{
 		// Deletes initialised UI pointer
 		delete pUI;
@@ -243,6 +354,19 @@ public:
 		}
 	}
 };
+
+
+/*
+void RandomWaiting(Patient* nextPatient)
+	{
+		nextPatient->setStatus(WAIT);
+		int randomNumber = Facilities::generateRandomNumber(0, 100);
+
+		if (randomNumber < 33) E_Waiting.enqueue_Latency(nextPatient); // here will be the Actual time of treatment
+		else if (randomNumber < 66) U_Waiting.enqueue_Latency(nextPatient);
+		else X_Waiting.enqueue_Latency(nextPatient);
+	}
+*/
 
 /*
 

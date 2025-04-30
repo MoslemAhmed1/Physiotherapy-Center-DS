@@ -152,7 +152,10 @@
     <ClInclude Include="XWaitingList.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ElectroTreatment.cpp" />
+    <ClCompile Include="GymTreatment.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="UltraTreatment.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

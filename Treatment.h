@@ -1,6 +1,8 @@
 #pragma once
 #include "Resource.h"
-#include "Scheduler.h"
+
+class Patient;
+class Scheduler;
 
 class Treatment
 {
@@ -24,9 +26,11 @@ public:
 
 	virtual bool CanAssign(Resource* recource) = 0;
 
-	// Will be implemented in phase 2
 	//virtual bool MoveToWait(Scheduler* scheduler, Patient* patient) = 0;	// Moves the patient to the appropriate waiting list. It should call
-																			// the appropriate "AddToWait" function from the 
+							
+	virtual TREATMENT_TYPE getType() = 0;
+	
+	// the appropriate "AddToWait" function from the 
 	// Will be used in phase 2
 	//virtual void PrintInfo(ostream& os) const = 0;
 
@@ -51,7 +55,7 @@ public:
 
 
 
-	virtual ~Treatment()
+	~Treatment()
 	{
 	}
 };

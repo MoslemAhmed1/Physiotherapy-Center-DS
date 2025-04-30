@@ -7,7 +7,7 @@ private:
 	static int number;
 
 public:
-	ElectroResource()
+	ElectroResource(): Resource()
 	{
 		RID = number;
 		RType = ELECTRO;

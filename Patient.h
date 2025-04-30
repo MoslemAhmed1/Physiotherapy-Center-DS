@@ -8,9 +8,11 @@ class Treatment;
 #include "ElectroTreatment.h"
 #include "GymTreatment.h"
 #include "UltraTreatment.h"
+#include "priQueue.h"
 
 #include "Definitions.h"
 #include <fstream>
+
 
 
 class Patient
@@ -122,6 +124,38 @@ public:
 		}
 	}
 
+	void reorderTreatments(int E_Latency, int U_Latency, int X_Latency)
+	{
+		if (PType == RECOVERING)
+		{
+			priQueue<Treatment*> temp;
+			Treatment* treatment = nullptr;
+			while (RequiredTreatment.dequeue(treatment))
+			{
+				if (treatment->getType() == ELECTROTREATMENT)
+				{
+					temp.enqueue(treatment, -E_Latency);
+				}
+				else if (treatment->getType() == ULTRATREATMENT)
+				{
+					temp.enqueue(treatment, -U_Latency);
+				}
+				else
+				{
+					temp.enqueue(treatment, -X_Latency);
+				}
+			}
+
+			treatment = nullptr;
+			int dummy;
+
+			while (temp.dequeue(treatment, dummy))
+			{
+				RequiredTreatment.enqueue(treatment);
+			}
+		}
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//											GETTERS & SETTERS											 //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,10 +178,11 @@ public:
 
 
 	// Get the current Treatement to assign the resource to it
-	Treatment* getCurrTreatment() {
-		Treatment* treat;
-		if (RequiredTreatment.peek(treat)) {
-			return treat;
+	Treatment* getCurrTreatment()
+	{
+		Treatment* treatment;
+		if (RequiredTreatment.peek(treatment)) {
+			return treatment;
 		}
 
 		return nullptr;

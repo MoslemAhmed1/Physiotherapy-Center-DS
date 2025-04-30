@@ -24,6 +24,13 @@ enum RESOURCE_TYPE
 	GYM
 };
 
+enum TREATMENT_TYPE
+{
+	ELECTROTREATMENT,
+	ULTRATREATMENT,
+	GYMTREATMENT
+};
+
 enum
 {
 	// Instead of using a global variable or the #define directive

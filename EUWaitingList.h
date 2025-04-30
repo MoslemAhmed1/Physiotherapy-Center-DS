@@ -19,6 +19,8 @@ public:
 
     bool dequeue_Latency(Patient*& patient);
 
+    int getLatency();
+
 
     ~EUWaitingList();
 
@@ -101,6 +103,11 @@ void EUWaitingList::PrintInfo()
     cout << *(traverse->getItem()) << endl;
 
     traverse = nullptr;
+}
+
+int EUWaitingList::getLatency()
+{
+    return treatmentLatency;
 }
 
 EUWaitingList::~EUWaitingList()

@@ -1,36 +1,25 @@
 #pragma once
 #include "Treatment.h"
 
+
 class GymTreatment : public Treatment
 {
 private:
 	int static number;
 
 public:
-	GymTreatment(int time) : Treatment(time)
-	{
-	}
+	GymTreatment(int time);
 
-	bool CanAssign(Resource* resource)
-	{
-		return (resource != nullptr);
-	}
+	TREATMENT_TYPE getType();
 
-	/*
-	bool MoveToWait(Scheduler* scheduler, Patient* patient)
-	{
-		return false; // To be changed
-	}
-	*/
 
-	void PrintInfo(ostream& os) const
-	{
-		// Will be used in phase 2
-		//os << 'G' << resourcePtr->getRID();
-	}
+	bool CanAssign(Resource* resource);
 
-	~GymTreatment() {}
+
+	//bool MoveToWait(Scheduler* scheduler, Patient* patient);
+
+
+	~GymTreatment();
 };
 
-int GymTreatment::number = 1;
 
