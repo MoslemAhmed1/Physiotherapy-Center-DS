@@ -1,0 +1,58 @@
+#pragma once
+#include "Resource.h"
+#include "Scheduler.h"
+
+class Treatment
+{
+protected:
+
+	int duration, assignmentTime;
+	Resource* resourcePtr;
+
+public:
+
+	Treatment(int time) : duration(time)
+	{
+		assignmentTime = 0;
+		resourcePtr = nullptr;
+	}
+
+	void setResource(Resource* r) 
+	{
+		resourcePtr = r;
+	}
+
+	virtual bool CanAssign(Resource* recource) = 0;
+
+	// Will be implemented in phase 2
+	//virtual bool MoveToWait(Scheduler* scheduler, Patient* patient) = 0;	// Moves the patient to the appropriate waiting list. It should call
+																			// the appropriate "AddToWait" function from the 
+	// Will be used in phase 2
+	//virtual void PrintInfo(ostream& os) const = 0;
+
+	friend ostream& operator << (ostream& os, const Treatment& treat)
+	{
+		//treat.PrintInfo(os);
+		switch (treat.resourcePtr->getType())
+		{
+		case ULTRASOUND:
+			os << 'U';
+			break;
+		case ELECTRO:
+			os << 'E';
+			break;
+		case GYM:
+			os << 'G';
+		}
+		os << treat.resourcePtr->getRID();
+
+		return os;
+	}
+
+
+
+	virtual ~Treatment()
+	{
+	}
+};
+

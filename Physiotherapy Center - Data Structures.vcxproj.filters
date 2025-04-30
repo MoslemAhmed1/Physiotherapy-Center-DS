@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\DSLib">
+      <UniqueIdentifier>{8da85922-37ed-4e37-a937-8e02dbc151d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Treatment">
+      <UniqueIdentifier>{6aa459c0-458d-4bbd-b392-005f0c5bca0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resource">
+      <UniqueIdentifier>{d3154f59-e645-454b-9756-e9643d7c9381}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Facilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Patient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayStack.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="EarlyPList.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="EUWaitingList.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedQueue.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="priNode.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="priQueue.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueADT.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="StackADT.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="XWaitingList.h">
+      <Filter>Header Files\DSLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectroResource.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="GymResource.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectroTreatment.h">
+      <Filter>Header Files\Treatment</Filter>
+    </ClInclude>
+    <ClInclude Include="GymTreatment.h">
+      <Filter>Header Files\Treatment</Filter>
+    </ClInclude>
+    <ClInclude Include="Treatment.h">
+      <Filter>Header Files\Treatment</Filter>
+    </ClInclude>
+    <ClInclude Include="UltraTreatment.h">
+      <Filter>Header Files\Treatment</Filter>
+    </ClInclude>
+    <ClInclude Include="UltrasoundResourse.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
