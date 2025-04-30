@@ -14,7 +14,8 @@ bool ElectroTreatment::CanAssign(Resource* resource) {
 }
 
 bool ElectroTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) {
-    if (waitPatient && scheduler) {
+    if (waitPatient && scheduler) 
+    {
         scheduler->add_E_waiting(waitPatient);
         return true;
     }

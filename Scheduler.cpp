@@ -120,7 +120,7 @@ void Scheduler::Simulate()
 			if (leavingTime <= currentTimestep)
 			{
 				availableResourcesE.peek(availableResource);
-				if (availableResource)
+				if (nextPatient->getCurrTreatment()->CanAssign(availableResource))
 				{
 					E_Waiting.dequeue_Latency(nextPatient);
 					availableResourcesE.dequeue(availableResource);
@@ -134,7 +134,7 @@ void Scheduler::Simulate()
 				else
 					break;
 
-				int leavingTime = 0;
+				leavingTime = 0;
 			}
 		}
 
@@ -148,7 +148,7 @@ void Scheduler::Simulate()
 			if (leavingTime <= currentTimestep)
 			{
 				availableResourcesU.peek(availableResource);
-				if (availableResource)
+				if (nextPatient->getCurrTreatment()->CanAssign(availableResource))
 				{
 					U_Waiting.dequeue_Latency(nextPatient);
 					availableResourcesU.dequeue(availableResource);
@@ -163,7 +163,7 @@ void Scheduler::Simulate()
 					break;
 
 				availableResource = nullptr;
-				int leavingTime = 0;
+				leavingTime = 0;
 			}
 		}
 		
