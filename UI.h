@@ -104,11 +104,29 @@ public:
 		cout << "Welcome to the medicinal scheduling system (MSS).\n";
 		cout << "\n==========================================\n";
 	}
+	
 	// Gets the file name and stores it in the fileName data member
 	void getInputFile() {
 		cout << "\nEnter the filename: ";
 		cin >> fileName;
 	}
+	
+	// Gets Mode of operation (Silent or Interactive)
+	OPERATION_MODE getOpMode() {
+		char opMode;
+		cout << "\nEnter mode of operation (S->Silent, I->Interactive): ";
+		cin >> opMode;
+		opMode = toupper(opMode);
+		switch (opMode) {
+		case 'S':
+			return SILENT;
+		case 'I':
+			return INTERACTIVE;
+		default:
+			return INVALID;
+		}
+	}
+	
 	// Checks if the user wants to proceed with the simulation or exit
 	bool proceed()
 	{
@@ -127,20 +145,36 @@ public:
 			return true;
 		}
 	}
+	
 	// Prints different error messages based on the error ID
-	void printErrorMsg(errID id)
+	void printErrorMsg(ERR_ID id)
 	{
 		switch (id) // in case more error types are added
 		{
 		case(FILE_NOT_OPEN):
 			cout << "\n==ERROR! FILE NOT FOUND OR COULDN'T BE OPENED!==\n";
 			break;
+		case(INVALID_OP_MODE):
+			cout << "\n==ERROR! INVALID OPERATION MODE ENTERED!==\n";
 		default:
 			break;
 		}
 	}
 
+	// Prints Exit Message 
+	void printEndMessage(OPERATION_MODE opMode) {
+		if (opMode == SILENT) {
+			cout << "\nSilent Mode, Simulation ends, Output file created";
+		}
+		else if (opMode == INTERACTIVE) {
+			cout << "\nExiting simulation...";
+		}
+	}
+
 	// returns the file name
 	string getFileName() { return fileName; }
+	
+	// Sets File Name
+	void setFileName(string name) { fileName = name; }
 
 };

@@ -162,6 +162,13 @@
     <ClCompile Include="UltrasoundResource.cpp" />
     <ClCompile Include="UltraTreatment.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Input\DSTest.txt" />
+    <Text Include="Input\Single.txt" />
+    <Text Include="Input\Test.txt" />
+    <Text Include="Input\Test1.txt" />
+    <Text Include="Input\Test2.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

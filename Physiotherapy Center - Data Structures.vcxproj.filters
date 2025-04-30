@@ -22,6 +22,12 @@
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{d3154f59-e645-454b-9756-e9643d7c9381}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{217f68eb-874c-4a49-9371-944a6c61eeec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Output">
+      <UniqueIdentifier>{b8f86769-4e74-4557-a44b-d18532568ecf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Definitions.h">
@@ -122,5 +128,22 @@
     <ClCompile Include="Patient.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Input\DSTest.txt">
+      <Filter>Input</Filter>
+    </Text>
+    <Text Include="Input\Single.txt">
+      <Filter>Input</Filter>
+    </Text>
+    <Text Include="Input\Test.txt">
+      <Filter>Input</Filter>
+    </Text>
+    <Text Include="Input\Test1.txt">
+      <Filter>Input</Filter>
+    </Text>
+    <Text Include="Input\Test2.txt">
+      <Filter>Input</Filter>
+    </Text>
   </ItemGroup>
 </Project>

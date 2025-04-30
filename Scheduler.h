@@ -39,7 +39,10 @@ private:
 	ArrayStack<Patient*> finishedPatients;
 
 	ifstream inFile;
+	ofstream outFile;
 	UI* pUI;
+
+	OPERATION_MODE opMode;
 
 	int currentTimestep, allPatientsCount;
 	int pCancel, pResc; // Cancellation and Reschedule Probabilities
