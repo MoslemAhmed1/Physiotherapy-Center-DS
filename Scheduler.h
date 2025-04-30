@@ -44,6 +44,8 @@ private:
 	ofstream outFile;
 	UI* pUI;
 
+	OPERATION_MODE opMode;
+
 	int currentTimestep, allPatientsCount;
 	int pCancel, pResc; // Cancellation and Reschedule Probabilities
 
@@ -69,6 +71,7 @@ public:
 		currentTimestep = 1;
 		pCancel = pResc = 0;
 		allPatientsCount = 0;
+		opMode = INVALID;
 	}
 
 	void Simulate()
@@ -79,6 +82,15 @@ public:
 			pUI->printErrorMsg(FILE_NOT_OPEN);
 			opened = loadInputFile();
 		}
+
+		OPERATION_MODE OM = pUI->getOpMode();
+		while (OM == INVALID) {
+			pUI->printErrorMsg(INVALID_OP_MODE);
+			OM = pUI->getOpMode();
+		}
+
+		opMode = OM;
+
 		while (finishedPatients.getCount() != allPatientsCount)
 		{
 			// 1- Check the allPatients list , if patient(s) arrive at the current timestep
@@ -111,11 +123,20 @@ public:
 				}
 				else break;
 			}
+			// Continue Phase 2 Here
+
+			if(opMode == INTERACTIVE)
+			{
+				pUI->printMaster(
+					currentTimestep, &availableResourcesE, &availableResourcesU, &availableResourcesX,
+					&U_Waiting, &E_Waiting, &X_Waiting, &allPatients, &earlyPatients, &finishedPatients,
+					&latePatients, &inTreatmentPatients
+				);
+
+				pUI->proceed();
+			}
 		}
-
-		// Continue Phase 2 Here
-
-
+		pUI->printEndMessage(opMode);
 	}
 
 	void RandomWaiting(Patient* nextPatient)

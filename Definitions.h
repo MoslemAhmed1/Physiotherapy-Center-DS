@@ -7,6 +7,13 @@ enum PATIENT_TYPE
 	RECOVERING
 };
 
+enum OPERATION_MODE 
+{
+	INTERACTIVE,
+	SILENT,
+	INVALID // In case invalid character is entered, (won't be used unless an error occurs.)
+};
+
 enum PATIENT_STATUS
 {
 	IDLE,
@@ -30,9 +37,10 @@ enum
 	MAX_SIZE = 1000
 };
 
-enum errID
+enum ERR_ID
 {
 	// Used for Error Messages in UI class
-	FILE_NOT_OPEN
+	FILE_NOT_OPEN,
+	INVALID_OP_MODE
 };
 
