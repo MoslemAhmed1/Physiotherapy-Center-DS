@@ -9,107 +9,93 @@ protected:
 
 public:
 
-    EUWaitingList();
-
-    bool insertSorted(Patient* const& patient);	/*  Insert a patient in the waiting list sorted by either PT + penalty for late patient,
-                                                or PT for patient who finished a treatment */
-    virtual void PrintInfo();
-
-    bool enqueue_Latency(Patient*& newEntry);
-
-    bool dequeue_Latency(Patient*& patient);
-
-    int getLatency();
-
-
-    ~EUWaitingList();
-
-};
-
-EUWaitingList::EUWaitingList() :LinkedQueue<Patient*>()
-{
-    treatmentLatency = 0;
-}
-
-bool EUWaitingList::enqueue_Latency(Patient*& patient)
-{
-    treatmentLatency += patient->getCurrentDuration();
-    return enqueue(patient);
-}
-
-bool EUWaitingList::dequeue_Latency(Patient*& patient)
-{
-    bool removed = dequeue(patient);
-    if (removed)
-        treatmentLatency -= patient->getCurrentDuration();  // Changed
-
-    return removed;
-}
-
-bool EUWaitingList::insertSorted(Patient* const& patient)
-{
-    treatmentLatency += patient->getCurrentDuration();
-    // 1- If Empty Queue -> enqueue
-    if (isEmpty())
+    EUWaitingList() :LinkedQueue<Patient*>()
     {
-        enqueue(patient);
-        return true;
+        treatmentLatency = 0;
     }
 
-    Node<Patient*>* newPatient = new Node<Patient*>(patient);
-    if (patient->getPriority() < frontPtr->getItem()->getPriority())
+    bool enqueue_Latency(Patient*& patient)
     {
-        newPatient->setNext(frontPtr);
-        frontPtr = newPatient;
+        treatmentLatency += patient->getCurrTreatment()->getDuration();
+        return enqueue(patient);
+    }
+
+    bool dequeue_Latency(Patient*& patient)
+    {
+        bool removed = dequeue(patient);
+        if (removed)
+            treatmentLatency -= patient->getCurrTreatment()->getDuration();  // Changed
+
+        return removed;
+    }
+
+    bool insertSorted(Patient* const& patient)
+    {
+        treatmentLatency += patient->getCurrTreatment()->getDuration();
+        // 1- If Empty Queue -> enqueue
+        if (isEmpty())
+        {
+            enqueue(patient);
+            return true;
+        }
+
+        Node<Patient*>* newPatient = new Node<Patient*>(patient);
+        if (patient->getPriority() < frontPtr->getItem()->getPriority())
+        {
+            newPatient->setNext(frontPtr);
+            frontPtr = newPatient;
+            count++;
+            return true;
+        }
+
+        Node<Patient*>* ptr = frontPtr;
+
+        while (ptr->getNext())
+        {
+            if (ptr->getNext()->getItem()->getPriority() > patient->getPriority())
+                break;
+            ptr = ptr->getNext();
+        }
+
+        newPatient->setNext(ptr->getNext());
+        ptr->setNext(newPatient);
+        if (ptr == backPtr)
+            backPtr = newPatient;
+
         count++;
         return true;
     }
 
-    Node<Patient*>* ptr = frontPtr;
-
-    while (ptr->getNext())
+    void PrintInfo()
     {
-        if (ptr->getNext()->getItem()->getPriority() > patient->getPriority())
-            break;
-        ptr = ptr->getNext();
+        //Use pointer manipulation to print the queue
+        if (isEmpty())
+        {
+            cout << endl;
+            return;
+        }
+
+        Node<Patient*>* traverse = frontPtr;
+
+        while (traverse->getNext())
+        {
+            cout << *(traverse->getItem()) << ", ";
+            traverse = traverse->getNext();
+        }
+
+        cout << *(traverse->getItem()) << endl;
+
+        traverse = nullptr;
     }
 
-    newPatient->setNext(ptr->getNext());
-    ptr->setNext(newPatient);
-    if (ptr == backPtr)
-        backPtr = newPatient;
-
-    count++;
-    return true;
-}
-
-void EUWaitingList::PrintInfo()
-{
-    //Use pointer manipulation to print the queue
-    if (isEmpty())
+    int getLatency()
     {
-        cout << endl;
-        return;
+        return treatmentLatency;
     }
 
-    Node<Patient*>* traverse = frontPtr;
-
-    while (traverse->getNext())
+    ~EUWaitingList()
     {
-        cout << *(traverse->getItem()) << ", ";
-        traverse = traverse->getNext();
     }
 
-    cout << *(traverse->getItem()) << endl;
+};
 
-    traverse = nullptr;
-}
-
-int EUWaitingList::getLatency()
-{
-    return treatmentLatency;
-}
-
-EUWaitingList::~EUWaitingList()
-{
-}

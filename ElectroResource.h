@@ -7,21 +7,11 @@ private:
 	static int number;
 
 public:
-	ElectroResource(): Resource()
-	{
-		RID = number;
-		RType = ELECTRO;
-		number++;
-	}
-
-	void PrintInfo(ostream& os) const override
-	{
-		os << RID;
-	}
-
-	~ElectroResource() { number--; }
-
+	ElectroResource();
 	
+
+	void PrintInfo(ostream& os) const;
+
+	~ElectroResource();
 };
 
-int ElectroResource::number = 1;

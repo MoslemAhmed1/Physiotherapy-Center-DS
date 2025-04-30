@@ -7,22 +7,13 @@ private:
 	static int number;
 
 public:
-	UltrasoundResourse() : Resource()
-	{
-		RID = number;
-		RType = ULTRASOUND;
-		number++;
-	}
+	UltrasoundResourse();
 
-	void PrintInfo(ostream& os) const override
-	{
-		os << RID;
-	}
+	void PrintInfo(ostream& os) const;
 	
-	~UltrasoundResourse() { number--; }
+	
+	~UltrasoundResourse();
 
-	
 };
 
-int UltrasoundResourse::number = 1;
 

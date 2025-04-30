@@ -8,35 +8,17 @@ class GymResource : public Resource
 
 public:
 
-	GymResource(int cap) : Resource()
-	{
-		currentPatients = 0;
-		capacity = cap;
-		RID = number;
-		RType = GYM;
-		number++;
-	}
+	GymResource(int cap);
 
-	void setCurrPatients(int num)
-	{
-		currentPatients = num;
-	}
+	void setCurrPatients(int num);
 
-	int getCurrPatients() const
-	{
-		return currentPatients;
-	}
+	int getCurrPatients() const;
 
-	void PrintInfo(ostream& os) const override
-	{
-		os << "X" << RID << "[" << currentPatients << ',' << capacity << "]";
-	}
+	void PrintInfo(ostream& os) const;
 
-	~GymResource() { number--; }
+	~GymResource();
 
 
 
 };
-
-int GymResource::number = 1;
 

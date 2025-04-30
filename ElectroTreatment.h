@@ -12,6 +12,6 @@ public:
     ElectroTreatment(int time);
     TREATMENT_TYPE getType();
     bool CanAssign(Resource* resource);
-    //bool MoveToWait(Scheduler* scheduler, Patient* patient);
+    bool MoveToWait(Scheduler* scheduler, Patient* patient);
     ~ElectroTreatment();
 };

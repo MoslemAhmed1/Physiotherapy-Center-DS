@@ -4,6 +4,5 @@ int main()
 {
     Scheduler scheduler;
     scheduler.Simulate();
-
     return 0;
 }

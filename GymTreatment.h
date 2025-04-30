@@ -16,7 +16,7 @@ public:
 	bool CanAssign(Resource* resource);
 
 
-	//bool MoveToWait(Scheduler* scheduler, Patient* patient);
+	bool MoveToWait(Scheduler* scheduler, Patient* patient);
 
 
 	~GymTreatment();

@@ -7,58 +7,57 @@ class EarlyPList : public priQueue<Patient*>
 {
 public:
 
-    EarlyPList();
-    bool reschedule();
-    ~EarlyPList();
-};
-EarlyPList::EarlyPList() : priQueue()
-{
-}
-
-bool EarlyPList::reschedule()
-{
-    // Return false if empty list
-    if (isEmpty()) // Changed 
-        return false;
-
-    // Choose a random patient position (1 to count)
-    int randomPosition = Facilities::generateRandomNumber(1, count);
-
-    // Find the randomly selected patient
-    priNode<Patient*>* prevPtr = nullptr;
-    priNode<Patient*>* currentPtr = head;
-
-    // Search for the randomly selected patient
-    for (int i = 1; i < randomPosition && currentPtr != nullptr; i++)
+    EarlyPList() : priQueue()
     {
-        prevPtr = currentPtr;
-        currentPtr = currentPtr->getNext();
     }
 
-    // Remove the patient from the list
-    if (prevPtr == nullptr)
-        head = currentPtr->getNext(); // The patient is at the head
-    else
-        prevPtr->setNext(currentPtr->getNext()); // The patient is somewhere in the middle or end
+    bool reschedule()
+    {
+        // Return false if empty list
+        if (isEmpty()) // Changed 
+            return false;
 
-    currentPtr->setNext(nullptr);
-    count--;
+        // Choose a random patient position (1 to count)
+        int randomPosition = Facilities::generateRandomNumber(1, count);
 
-    // Calculate new PT (higher than old PT)
-    int oldPT = 0;
-    Patient* patient = currentPtr->getItem(oldPT);
-    oldPT = patient->getPT();
+        // Find the randomly selected patient
+        priNode<Patient*>* prevPtr = nullptr;
+        priNode<Patient*>* currentPtr = head;
 
-    int newPT = Facilities::generateRandomNumber(oldPT, 100);
-    patient->setPT(newPT);
-    patient->setPriority(-newPT);
-    // Re-enqueue the patient with the new priority
-    enqueue(patient, newPT);
+        // Search for the randomly selected patient
+        for (int i = 1; i < randomPosition && currentPtr != nullptr; i++)
+        {
+            prevPtr = currentPtr;
+            currentPtr = currentPtr->getNext();
+        }
 
-    return true;
-}
+        // Remove the patient from the list
+        if (prevPtr == nullptr)
+            head = currentPtr->getNext(); // The patient is at the head
+        else
+            prevPtr->setNext(currentPtr->getNext()); // The patient is somewhere in the middle or end
 
-EarlyPList::~EarlyPList()
-{
-}
+        currentPtr->setNext(nullptr);
+        count--;
+
+        // Calculate new PT (higher than old PT)
+        int oldPT = 0;
+        Patient* patient = currentPtr->getItem(oldPT);
+        oldPT = patient->getPT();
+
+        int newPT = Facilities::generateRandomNumber(oldPT, 100);
+        patient->setPT(newPT);
+        patient->setPriority(-newPT);
+        // Re-enqueue the patient with the new priority
+        enqueue(patient, newPT);
+
+        return true;
+    }
+
+    ~EarlyPList()
+    {
+    }
+
+    
+};
 

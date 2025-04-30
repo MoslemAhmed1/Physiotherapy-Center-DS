@@ -1,4 +1,5 @@
 #include "UltraTreatment.h"
+#include "Scheduler.h"
 
 UltraTreatment::UltraTreatment(int time):Treatment(time)
 {
@@ -14,15 +15,15 @@ bool UltraTreatment::CanAssign(Resource* recource)
 	return (recource != nullptr);
 }
 
-//bool UltraTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient)
-//{
-//	if (waitPatient && scheduler)
-//	{
-//		scheduler->add_U_waiting(waitPatient);
-//		return true;
-//	}
-//	return false;
-//}
+bool UltraTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient)
+{
+	if (waitPatient && scheduler)
+	{
+		scheduler->add_U_waiting(waitPatient);
+		return true;
+	}
+	return false;
+}
 
 UltraTreatment::~UltraTreatment()
 {

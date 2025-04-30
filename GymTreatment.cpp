@@ -12,13 +12,13 @@ bool GymTreatment::CanAssign(Resource* resource) {
 }
 
 
-//bool GymTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) {
-//    if (waitPatient && scheduler) {
-//        scheduler->add_X_waiting(waitPatient);
-//        return true;
-//    }
-//    return false;
-//}
+bool GymTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) {
+    if (waitPatient && scheduler) {
+        scheduler->add_X_waiting(waitPatient);
+        return true;
+    }
+    return false;
+}
 
 GymTreatment::~GymTreatment()
 {

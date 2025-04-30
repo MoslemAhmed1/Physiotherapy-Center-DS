@@ -107,5 +107,20 @@
     <ClCompile Include="UltraTreatment.cpp">
       <Filter>Header Files\Treatment</Filter>
     </ClCompile>
+    <ClCompile Include="Scheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectroResource.cpp">
+      <Filter>Header Files\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="GymResource.cpp">
+      <Filter>Header Files\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="UltrasoundResource.cpp">
+      <Filter>Header Files\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Patient.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

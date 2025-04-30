@@ -26,7 +26,7 @@ public:
 
 	virtual bool CanAssign(Resource* recource) = 0;
 
-	//virtual bool MoveToWait(Scheduler* scheduler, Patient* patient) = 0;	// Moves the patient to the appropriate waiting list. It should call
+	virtual bool MoveToWait(Scheduler* scheduler, Patient* patient) = 0;	// Moves the patient to the appropriate waiting list. It should call
 							
 	virtual TREATMENT_TYPE getType() = 0;
 	
@@ -52,6 +52,11 @@ public:
 
 		return os;
 	}
+
+	int getDuration() { return duration; }
+
+	void setAssignmentTime(int time) { assignmentTime = time; }
+	int getAssignmentTime() { return assignmentTime; }
 
 
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "priNode.h"
+class Patient;
 
 template <typename T>
 class priQueue
