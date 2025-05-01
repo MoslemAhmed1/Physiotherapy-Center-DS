@@ -45,6 +45,8 @@ public:
         Patient* patient = currentPtr->getItem(oldPT);
         oldPT = patient->getPT();
 
+        patient->reschedule();
+
         int newPT = Facilities::generateRandomNumber(oldPT, 100);
         patient->setPT(newPT);
         patient->setPriority(-newPT);

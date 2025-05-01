@@ -9,6 +9,8 @@ Patient::Patient(char type, int PT, int VT) : PT(PT), VT(VT)
 	currentDuration = 0;
 	treatmentFinish = 0;
 	numPatients++;
+	fCancelled = false;
+	fRescheduled = false;
 }
 
 void Patient::setType(char type)
@@ -128,6 +130,28 @@ void Patient::setTW() { TW = FT - VT - TT; }
 int Patient::getTW() { return TW; }
 void Patient::setFT(int finishTime) { FT = finishTime; }
 int Patient::getFT() { return FT; }
+
+
+void Patient::cancel() {
+	fCancelled = true;
+}
+
+bool Patient::cancelled() {
+	return fCancelled;
+}
+
+void Patient::reschedule() {
+	fRescheduled = true;
+}
+
+bool Patient::rescheduled() {
+	return fRescheduled;
+}
+
+PATIENT_TYPE Patient::getType() {
+	return PType;
+}
+
 
 
 // Get the current Treatement to assign the resource to it

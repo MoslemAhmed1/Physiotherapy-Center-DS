@@ -149,7 +149,7 @@ public:
 	// Prints different error messages based on the error ID
 	void printErrorMsg(ERR_ID id)
 	{
-		switch (id) // in case more error types are added
+		switch (id) 
 		{
 		case(FILE_NOT_OPEN):
 			cout << "\n==ERROR! FILE NOT FOUND OR COULDN'T BE OPENED!==\n";

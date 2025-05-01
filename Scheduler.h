@@ -47,6 +47,8 @@ private:
 	int currentTimestep, allPatientsCount;
 	int pCancel, pResc; // Cancellation and Reschedule Probabilities
 
+	int totalPenaltyTime;
+	int earlyNum, lateNum;
 
 public:
 
@@ -74,6 +76,8 @@ public:
 	void AddToWait_X(Patient* waitPatient);
 
 	bool loadInputFile();
+
+	bool generateOutputFile();
 
 	void loadDevices();
 

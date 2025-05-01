@@ -33,6 +33,7 @@ public:
         if (patientPtr->lastTreatment())
         {
             patientPtr->setStatus(FNSH);
+            patientPtr->cancel(); // sets fCancelled to true
 
             if (frontPtr == backPtr) // The list has only one patient
             {

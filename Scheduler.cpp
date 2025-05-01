@@ -4,12 +4,16 @@
 #include "Patient.h"
 
 
+
 Scheduler::Scheduler()
 {
 	pUI = new UI;
 	currentTimestep = 1;
 	pCancel = pResc = 0;
 	allPatientsCount = 0;
+	totalPenaltyTime = 0;
+	earlyNum = 0;
+	lateNum = 0;
 }
 
 void Scheduler::Simulate()
@@ -20,6 +24,12 @@ void Scheduler::Simulate()
 	while (!opened) {
 		pUI->printErrorMsg(FILE_NOT_OPEN);
 		opened = loadInputFile();
+	}
+
+	opMode = pUI->getOpMode();
+	while (opMode == INVALID) {
+		pUI->printErrorMsg(INVALID_OP_MODE);
+		opMode = pUI->getOpMode();
 	}
 
 	while (finishedPatients.getCount() != allPatientsCount)
@@ -39,12 +49,15 @@ void Scheduler::Simulate()
 
 				if (status == EARLY)
 				{
+					earlyNum++;
 					earlyPatients.enqueue(nextPatient, -PT);
 				}
 
 				else if (status == LATE)
 				{
+					lateNum++;
 					int penalty = (VT - PT) / 2;
+					totalPenaltyTime += penalty;
 					latePatients.enqueue(nextPatient, -(VT + penalty));
 				}
 
@@ -276,22 +289,23 @@ void Scheduler::Simulate()
 			// TODO : Handle statistics for percentage rescheduled patients ??
 			earlyPatients.reschedule();
 		}
+		
+		if (opMode == INTERACTIVE) {	
+			pUI->printMaster(
+				currentTimestep, &availableResourcesE, &availableResourcesU, &availableResourcesX,
+				&U_Waiting, &E_Waiting, &X_Waiting, &allPatients, &earlyPatients, &finishedPatients,
+				&latePatients, &inTreatmentPatients
+			);
 
-
-		pUI->printMaster(
-			currentTimestep, &availableResourcesE, &availableResourcesU, &availableResourcesX,
-			&U_Waiting, &E_Waiting, &X_Waiting, &allPatients, &earlyPatients, &finishedPatients,
-			&latePatients, &inTreatmentPatients
-		);
-
-		bool proceed = pUI->proceed();
-		if (!proceed)
-			break;
+			bool proceed = pUI->proceed();
+			if (!proceed)
+				break;
+		}
 
 		currentTimestep++;
-
 	}
-
+	pUI->printEndMessage(opMode);
+	generateOutputFile();
 }
 
 void Scheduler::AddToWait_E(Patient* waitPatient)
@@ -389,6 +403,87 @@ bool Scheduler::loadInputFile()
 	loadPatients();
 
 	return true;
+}
+
+bool Scheduler::generateOutputFile() {
+	string filename = "Output";
+	filename += pUI->getFileName();
+	// Reads the filename and appends .txt to it if it has length <= 4 or isn't a text file
+	if (filename.length() <= 4 || filename.substr(filename.length() - 4) != ".txt") {
+		filename.append(".txt");
+	}
+	outFile.open(filename);
+
+	if (outFile.fail() || !outFile.is_open()) {
+		return false;
+	}
+
+	Patient* toPrint = nullptr;
+	int nNum = 0, rNum = 0;  
+	int cancelledNum = 0, rescheduledNum = 0;
+	int allTT = 0, nTT = 0, rTT = 0;
+	int allWT = 0, nWT = 0, rWT = 0;
+
+	outFile << "PID" << "\tPType" << "\tPT" << "\tVT" << "\tFT" << "\tWT" << "\tTT" << "\tCancel" << "\tResc" << '\n';
+
+	while (finishedPatients.pop(toPrint)) {
+		// PID
+		outFile << 'P' << toPrint->getPID() << '\t';
+		
+		// pType
+		if (toPrint->getType() == NORMAL) {
+			nNum++;
+			outFile << 'N';
+			nTT += toPrint->getTT();
+			nWT += toPrint->getTW();
+		}
+		else {
+			rNum++;
+			outFile << 'R';
+			rTT += toPrint->getTT();
+			rWT += toPrint->getTW();
+		}
+
+		allTT += toPrint->getTT();
+		allWT += toPrint->getTW();
+
+		outFile << '\t' << toPrint->getPT(); // PT
+		outFile << '\t' << toPrint->getVT(); // VT
+		outFile << '\t' << toPrint->getFT(); // FT
+		outFile << '\t' << toPrint->getTW(); // WT
+		outFile << '\t' << toPrint->getTT(); // TT
+
+		// Cancel
+		outFile << '\t';
+		if (toPrint->cancelled()) {
+			cancelledNum++;
+			outFile << 'T';
+		}
+		else {
+			outFile << 'F';
+		}
+
+		// Resc
+		outFile << '\t';
+		if (toPrint->rescheduled()) {
+			rescheduledNum++;
+			outFile << 'T';
+		}
+		else {
+			outFile << 'F';
+		}
+
+
+	}
+	outFile << "\nTotal number of timesteps = " << currentTimestep;
+	outFile << "\nTotal number of all, N, and R patients = " << allPatientsCount << ", " << nNum << ", " << rNum;
+ 	outFile << "\nAverage total waiting time for all, N, and R patients = " << double(allWT) / allPatientsCount << double(nWT) / nNum << double(rWT) / rNum;
+	outFile << "\nAverage total treatment time for all, N, and R patients = " << double(allTT) / allPatientsCount << double(nTT) / nNum << double(rTT) / rNum;
+	outFile << "\nPercentage of patients of an accepted cancellation (%) = " << double(cancelledNum) / allPatientsCount * 100 << '%';
+	outFile << "\nPercentage of patients of an accepted rescheduling (%) = " << double(rescheduledNum) / allPatientsCount * 100 << '%';
+	outFile << "\nPercentage of early patients (%) = " << float(earlyNum) / allPatientsCount * 100 << '%';
+	outFile << "\nPercentage of late patients (%) = " << float(lateNum) / allPatientsCount * 100 << '%';
+	outFile << "\nAverage late penalty = " << float(totalPenaltyTime) / lateNum;
 }
 
 void Scheduler::loadDevices()
