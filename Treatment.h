@@ -19,7 +19,7 @@ public:
 		resourcePtr = nullptr;
 	}
 
-	void setResource(Resource* r) 
+	virtual void setResource(Resource* r) 
 	{
 		resourcePtr = r;
 	}

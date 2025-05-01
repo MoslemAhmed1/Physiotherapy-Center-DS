@@ -10,9 +10,11 @@ public:
 
 	GymResource(int cap);
 
-	void setCurrPatients(int num);
+	void incrementCurrPatients(int num);
 
 	int getCurrPatients() const;
+
+	int getCapacity() const;
 
 	void PrintInfo(ostream& os) const;
 

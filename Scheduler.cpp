@@ -133,7 +133,7 @@ void Scheduler::Simulate()
 			if (leavingTime <= currentTimestep)
 			{
 				availableResourcesE.peek(availableResource);
-				if (availableResource)
+				if (nextPatient->getCurrTreatment()->CanAssign(availableResource))
 				{
 					E_Waiting.dequeue_Latency(nextPatient);
 					availableResourcesE.dequeue(availableResource);
@@ -161,7 +161,7 @@ void Scheduler::Simulate()
 			if (leavingTime <= currentTimestep)
 			{
 				availableResourcesU.peek(availableResource);
-				if (availableResource)
+				if (nextPatient->getCurrTreatment()->CanAssign(availableResource))
 				{
 					U_Waiting.dequeue_Latency(nextPatient);
 					availableResourcesU.dequeue(availableResource);
@@ -191,12 +191,17 @@ void Scheduler::Simulate()
 			if (leavingTime <= currentTimestep)
 			{
 				availableResourcesX.peek(availableResource);
-				if (availableResource)
+				if (nextPatient->getCurrTreatment()->CanAssign(availableResource))
 				{
 					X_Waiting.dequeue_Latency(nextPatient);
-					// TODO : Check Capacity 
-					availableResourcesX.dequeue(availableResource);
 					nextPatient->getCurrTreatment()->setResource(availableResource);
+
+					// Check if resource is full (Capacity == currPatients)
+					if (!nextPatient->getCurrTreatment()->CanAssign(availableResource))
+					{
+						availableResourcesX.dequeue(availableResource);
+					}
+
 					nextPatient->setStatus(SERV);
 					nextPatient->getCurrTreatment()->setAssignmentTime(currentTimestep);
 
@@ -254,13 +259,17 @@ void Scheduler::Simulate()
 					}
 					else if (resourcePtr->getType() == GYM)
 					{
-						// TODO : Check Capacity
-						availableResourcesX.enqueue(resourcePtr);
+						GymResource* gymResource = dynamic_cast<GymResource*>(resourcePtr);
+						if (gymResource && (gymResource->getCurrPatients() == gymResource->getCapacity()))
+						{
+							availableResourcesX.enqueue(resourcePtr);
+						}
 					}
 				}
 
 				// TODO : Handle deleting the required treatment
 				nextPatient->getCurrTreatment()->setResource(nullptr);
+				nextPatient->RemoveCurrentTreatment();
 			}
 			else
 				break;

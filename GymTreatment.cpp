@@ -7,10 +7,30 @@ TREATMENT_TYPE GymTreatment::getType() {
     return GYMTREATMENT;
 }
 
-bool GymTreatment::CanAssign(Resource* resource) {
-    return (resource != nullptr);
+bool GymTreatment::CanAssign(Resource* resource) 
+{
+	GymResource* gymResource = dynamic_cast<GymResource*>(resource);
+    bool canAssign = false;
+	if (gymResource && gymResource->getCurrPatients() < gymResource->getCapacity()) 
+    {
+		canAssign = true;
+	}
+    return canAssign;
 }
 
+void GymTreatment::setResource(Resource* r) 
+{
+	GymResource* rPtr = dynamic_cast<GymResource*>(r);
+	if (rPtr)
+	{
+		rPtr->incrementCurrPatients(1);
+	}
+	else
+	{
+		rPtr->incrementCurrPatients(-1);
+	}
+	resourcePtr = rPtr;
+}
 
 bool GymTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) {
     if (waitPatient && scheduler) {

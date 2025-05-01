@@ -8,6 +8,7 @@ private:
 	int static number;
 
 public:
+
 	GymTreatment(int time);
 
 	TREATMENT_TYPE getType();
@@ -15,6 +16,7 @@ public:
 
 	bool CanAssign(Resource* resource);
 
+	void setResource(Resource* r);
 
 	bool MoveToWait(Scheduler* scheduler, Patient* patient);
 
