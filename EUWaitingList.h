@@ -24,7 +24,7 @@ public:
     {
         bool removed = dequeue(patient);
         if (removed)
-            treatmentLatency -= patient->getCurrTreatment()->getDuration();  // Changed
+            treatmentLatency -= patient->getCurrTreatment()->getDuration();
 
         return removed;
     }

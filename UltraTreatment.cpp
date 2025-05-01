@@ -19,7 +19,7 @@ bool UltraTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient)
 {
 	if (waitPatient && scheduler)
 	{
-		scheduler->add_U_waiting(waitPatient);
+		scheduler->AddToWait_U(waitPatient);
 		return true;
 	}
 	return false;

@@ -14,6 +14,7 @@ Scheduler::Scheduler()
 
 void Scheduler::Simulate()
 {
+	// Load Input File
 	pUI->printWelcomeMessage();
 	bool opened = loadInputFile();
 	while (!opened) {
@@ -23,9 +24,7 @@ void Scheduler::Simulate()
 
 	while (finishedPatients.getCount() != allPatientsCount)
 	{	
-		// 1- Check the allPatients list , if patient(s) arrive at the current timestep
-		//	move them to either (Early / Late / random Waiting) List
-
+		// 1- All Patients to (Early/Late/Wait)
 		Patient* nextPatient = nullptr;
 		while (allPatients.peek(nextPatient))
 		{
@@ -57,7 +56,8 @@ void Scheduler::Simulate()
 
 					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
 
-					nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
+					// Could add a function "AssignToWait" in the patient class to perform this ?
+					nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);	
 				}
 			}
 			else break;
@@ -66,6 +66,7 @@ void Scheduler::Simulate()
 		nextPatient = nullptr;
 		int leavingTime = 0;
 
+		// 2.1- Early Patients to Wait
 		while (earlyPatients.peek(nextPatient, leavingTime))
 		{
 			leavingTime = -leavingTime;
@@ -78,17 +79,17 @@ void Scheduler::Simulate()
 				int X_Latency = X_Waiting.getLatency();
 
 				nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
-
 				nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
 			}
 			else
 				break;
-			leavingTime = 0;
+			// leavingTime = 0; // Not needed
 		}
 
 		nextPatient = nullptr;
 		leavingTime = 0;
 
+		// 2.2- Late Patients to Wait
 		while (latePatients.peek(nextPatient, leavingTime))
 		{
 			leavingTime = -leavingTime;
@@ -105,15 +106,14 @@ void Scheduler::Simulate()
 			}
 			else
 				break;
-
-			leavingTime = 0;
+			// leavingTime = 0; // Not needed
 		}
 
 		nextPatient = nullptr;
 		leavingTime = 0;
 		Resource* availableResource = nullptr;
 
-
+		// 3.1- E-Waiting to Intreatment
 		while (E_Waiting.peek(nextPatient))
 		{
 			leavingTime = nextPatient->getPriority();
@@ -133,8 +133,7 @@ void Scheduler::Simulate()
 				}
 				else
 					break;
-
-				int leavingTime = 0;
+				// leavingTime = 0; // Not needed
 			}
 		}
 
@@ -142,6 +141,7 @@ void Scheduler::Simulate()
 		leavingTime = 0;
 		availableResource = nullptr;
 
+		// 3.2- U-Waiting to Intreatment
 		while (U_Waiting.peek(nextPatient))
 		{
 			leavingTime = nextPatient->getPriority();
@@ -163,10 +163,121 @@ void Scheduler::Simulate()
 					break;
 
 				availableResource = nullptr;
-				int leavingTime = 0;
+				// leavingTime = 0; // Not needed
+			}
+		}
+
+		nextPatient = nullptr;
+		leavingTime = 0;
+		availableResource = nullptr;
+
+		// 3.3- X-Waiting to Intreatment
+		while (X_Waiting.peek(nextPatient))
+		{
+			leavingTime = nextPatient->getPriority();
+			if (leavingTime <= currentTimestep)
+			{
+				availableResourcesX.peek(availableResource);
+				if (availableResource)
+				{
+					X_Waiting.dequeue_Latency(nextPatient);
+					// TODO : Check Capacity 
+					availableResourcesX.dequeue(availableResource);
+					nextPatient->getCurrTreatment()->setResource(availableResource);
+					nextPatient->setStatus(SERV);
+					nextPatient->getCurrTreatment()->setAssignmentTime(currentTimestep);
+
+					int priority = currentTimestep + nextPatient->getCurrTreatment()->getDuration();
+					inTreatmentPatients.enqueue(nextPatient, -priority);
+				}
+				else
+					break;
+
+				availableResource = nullptr;
+				// leavingTime = 0; // Not needed
+			}
+		}
+
+		nextPatient = nullptr;
+		leavingTime = 0;
+		availableResource = nullptr;
+
+		// 4- Intreatment to (Finish/Wait)
+		while (inTreatmentPatients.peek(nextPatient, leavingTime))
+		{
+			leavingTime = -leavingTime;
+			if (leavingTime == currentTimestep)
+			{
+				inTreatmentPatients.dequeue(nextPatient, leavingTime);
+				if (!nextPatient->getCurrTreatment()) // Patient has finished all his treatments
+				{
+					nextPatient->setStatus(FNSH);
+					nextPatient->setFT(currentTimestep);
+					// TODO : Set Total Treatment Time
+					nextPatient->setTW();
+					finishedPatients.push(nextPatient);
+				}
+				else // Move patient to the next waiting list
+				{
+					int E_Latency = E_Waiting.getLatency();
+					int U_Latency = U_Waiting.getLatency();
+					int X_Latency = X_Waiting.getLatency();
+
+					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
+					nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
+				}
+
+				// Return the patients resource to the available resources list
+				Resource* resourcePtr = nextPatient->getCurrTreatment()->getResource();
+				if (resourcePtr)
+				{ 
+					if (resourcePtr->getType() == ELECTRO)
+					{
+						availableResourcesE.enqueue(resourcePtr);
+					}
+					else if (resourcePtr->getType() == ULTRASOUND)
+					{
+						availableResourcesU.enqueue(resourcePtr);
+					}
+					else if (resourcePtr->getType() == GYM)
+					{
+						// TODO : Check Capacity
+						availableResourcesX.enqueue(resourcePtr);
+					}
+				}
+
+				// TODO : Handle deleting the required treatment
+				nextPatient->getCurrTreatment()->setResource(nullptr);
+			}
+			else
+				break;
+			// leavingTime = 0; // Not needed
+		}
+
+
+		// 4.1- Cancellation
+		int randomNum = Facilities::generateRandomNumber(0, 100);
+		if (randomNum < pCancel && !X_Waiting.isEmpty())
+		{
+			Patient* cancelledPatient = nullptr;
+			if (X_Waiting.cancel(cancelledPatient)) 
+			{
+				// TODO : Handle statistics for percentage cancelled patients ??
+				// TODO : Set Status , FT , TT , TW ... 
+				cancelledPatient->setStatus(FNSH);
+				finishedPatients.push(cancelledPatient);	
 			}
 		}
 		
+		// 4.2- Rescheduling
+		randomNum = Facilities::generateRandomNumber(0, 100);
+		if (randomNum < pResc && !earlyPatients.isEmpty())
+		{
+			// TODO : Handle statistics for percentage rescheduled patients ??
+			earlyPatients.reschedule();
+		}
+
+
 		pUI->printMaster(
 			currentTimestep, &availableResourcesE, &availableResourcesU, &availableResourcesX,
 			&U_Waiting, &E_Waiting, &X_Waiting, &allPatients, &earlyPatients, &finishedPatients,
@@ -179,24 +290,20 @@ void Scheduler::Simulate()
 
 		currentTimestep++;
 
-
 	}
-
-	// Continue Phase 2 Here
-
 
 }
 
-void Scheduler::add_E_waiting(Patient* waitPatient)
+void Scheduler::AddToWait_E(Patient* waitPatient)
 {
 	PATIENT_STATUS status = waitPatient->getStatus();
 	waitPatient->setStatus(WAIT);
+
 	if (status == EARLY || status == WAIT)
 	{
 		waitPatient->setPriority(waitPatient->getPT());
 		E_Waiting.enqueue_Latency(waitPatient);
 	}
-
 	else if (status == LATE)
 	{
 		int priority = waitPatient->getPT() + (waitPatient->getVT() - waitPatient->getPT()) / 2;
@@ -209,7 +316,7 @@ void Scheduler::add_E_waiting(Patient* waitPatient)
 	}
 }
 
-void Scheduler::add_U_waiting(Patient* waitPatient)
+void Scheduler::AddToWait_U(Patient* waitPatient)
 {
 	PATIENT_STATUS status = waitPatient->getStatus();
 	waitPatient->setStatus(WAIT);
@@ -219,7 +326,6 @@ void Scheduler::add_U_waiting(Patient* waitPatient)
 		waitPatient->setPriority(waitPatient->getPT());
 		U_Waiting.enqueue_Latency(waitPatient);
 	}
-
 	else if (status == LATE)
 	{
 		int priority = waitPatient->getPT() + (waitPatient->getVT() - waitPatient->getPT()) / 2;
@@ -232,7 +338,7 @@ void Scheduler::add_U_waiting(Patient* waitPatient)
 	}
 }
 
-void Scheduler::add_X_waiting(Patient* waitPatient)
+void Scheduler::AddToWait_X(Patient* waitPatient)
 {
 	PATIENT_STATUS status = waitPatient->getStatus();
 	waitPatient->setStatus(WAIT);
@@ -242,7 +348,6 @@ void Scheduler::add_X_waiting(Patient* waitPatient)
 		waitPatient->setPriority(waitPatient->getPT());
 		X_Waiting.enqueue_Latency(waitPatient);
 	}
-
 	else if (status == LATE)
 	{
 		int priority = waitPatient->getPT() + (waitPatient->getVT() - waitPatient->getPT()) / 2;
@@ -255,9 +360,6 @@ void Scheduler::add_X_waiting(Patient* waitPatient)
 		X_Waiting.insertSorted(waitPatient);
 	}
 }
-
-
-
 
 bool Scheduler::loadInputFile()
 {

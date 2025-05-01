@@ -24,6 +24,11 @@ public:
 		resourcePtr = r;
 	}
 
+	Resource* getResource() const
+	{
+		return resourcePtr;
+	}
+
 	virtual bool CanAssign(Resource* recource) = 0;
 
 	virtual bool MoveToWait(Scheduler* scheduler, Patient* patient) = 0;	// Moves the patient to the appropriate waiting list. It should call

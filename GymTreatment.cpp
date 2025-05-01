@@ -14,7 +14,7 @@ bool GymTreatment::CanAssign(Resource* resource) {
 
 bool GymTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) {
     if (waitPatient && scheduler) {
-        scheduler->add_X_waiting(waitPatient);
+        scheduler->AddToWait_X(waitPatient);
         return true;
     }
     return false;

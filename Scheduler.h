@@ -51,27 +51,27 @@ private:
 public:
 
 	// This Class should have member functions to :
-	//	1- At program startup, open the input file and load patients to the "ALL" list
+	//	- At program startup, open the input file and load patients to the "ALL" list (DONE)
 	// 
-	//	2- A main Simulation function that at each timestep : 
-	//		2.1- Checks "ALL" list and if a patient has arrived, move him to Early/Late/Wait
-	//		2.2- Functions AddToWait_U to add a patient to U-Wait list and similar functions 
+	//	- A main Simulation function that at each timestep : 
+	//		1- Checks "ALL" list and if a patient has arrived, move him to Early/Late/Wait (DONE)
+	//		2- Functions AddToWait_U to add a patient to U-Wait list and similar functions (DONE)
 	//			to add to E-Wait and X-Wait. These functions are to be called by Treatment::MoveToWait function
-	//		2.3- Assign patients to resoures
-	//		2.4- When a patient is done with a treatment move him to Wait/Finish list
-	//		2.5- Collect statistics that are needed to create output file
-	//		2.6- Call UI class functions to print details on the output screen
-	//	3- Produce the output file at the end of simulation
+	//		3- Assign patients to resoures (DONE)
+	//		4- When a patient is done with a treatment move him to Wait/Finish list (DONE)
+	//		5- Collect statistics that are needed to create output file (TODO : George)
+	//		6- Call UI class functions to print details on the output screen (DONE)
+	//	- Produce the output file at the end of simulation (TODO : George)
 
 	Scheduler();
 
 	void Simulate();
 
-	void add_E_waiting(Patient* waitPatient);
+	void AddToWait_E(Patient* waitPatient);
 
-	void add_U_waiting(Patient* waitPatient);
+	void AddToWait_U(Patient* waitPatient);
 
-	void add_X_waiting(Patient* waitPatient);
+	void AddToWait_X(Patient* waitPatient);
 
 	bool loadInputFile();
 
