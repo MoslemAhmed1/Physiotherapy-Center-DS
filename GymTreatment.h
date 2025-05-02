@@ -5,6 +5,7 @@
 class GymTreatment : public Treatment
 {
 private:
+
 	int static number;
 
 public:
@@ -17,6 +18,8 @@ public:
 	bool CanAssign(Resource* resource);
 
 	void setResource(Resource* r);
+
+	void removeResource();
 
 	bool MoveToWait(Scheduler* scheduler, Patient* patient);
 

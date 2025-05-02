@@ -24,6 +24,14 @@ public:
 		resourcePtr = r;
 	}
 
+	virtual void removeResource()
+	{
+		if (resourcePtr)
+		{
+			resourcePtr = nullptr;
+		}
+	}
+
 	Resource* getResource() const
 	{
 		return resourcePtr;

@@ -174,8 +174,6 @@ void Scheduler::Simulate()
 				}
 				else
 					break;
-
-				availableResource = nullptr;
 				// leavingTime = 0; // Not needed
 			}
 		}
@@ -210,8 +208,6 @@ void Scheduler::Simulate()
 				}
 				else
 					break;
-
-				availableResource = nullptr;
 				// leavingTime = 0; // Not needed
 			}
 		}
@@ -227,28 +223,11 @@ void Scheduler::Simulate()
 			if (leavingTime == currentTimestep)
 			{
 				inTreatmentPatients.dequeue(nextPatient, leavingTime);
-				if (!nextPatient->getCurrTreatment()) // Patient has finished all his treatments
-				{
-					nextPatient->setStatus(FNSH);
-					nextPatient->setFT(currentTimestep);
-					// TODO : Set Total Treatment Time
-					nextPatient->setTW();
-					finishedPatients.push(nextPatient);
-				}
-				else // Move patient to the next waiting list
-				{
-					int E_Latency = E_Waiting.getLatency();
-					int U_Latency = U_Waiting.getLatency();
-					int X_Latency = X_Waiting.getLatency();
-
-					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
-					nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
-				}
 
 				// Return the patients resource to the available resources list
 				Resource* resourcePtr = nextPatient->getCurrTreatment()->getResource();
 				if (resourcePtr)
-				{ 
+				{
 					if (resourcePtr->getType() == ELECTRO)
 					{
 						availableResourcesE.enqueue(resourcePtr);
@@ -266,10 +245,28 @@ void Scheduler::Simulate()
 						}
 					}
 				}
-
-				// TODO : Handle deleting the required treatment
+				// Handle deleting the required treatment
 				nextPatient->getCurrTreatment()->setResource(nullptr);
-				nextPatient->RemoveCurrentTreatment();
+				Treatment* treatment = nextPatient->RemoveCurrentTreatment();
+
+				// Patient has finished all his treatments
+				if (!nextPatient->getCurrTreatment()) 
+				{
+					nextPatient->setStatus(FNSH);
+					nextPatient->setFT(currentTimestep);
+					nextPatient->setTT(nextPatient->getTT() - treatment->getDuration());
+					nextPatient->setTW();
+					finishedPatients.push(nextPatient);
+				}
+				else // Move patient to the next waiting list
+				{
+					int E_Latency = E_Waiting.getLatency();
+					int U_Latency = U_Waiting.getLatency();
+					int X_Latency = X_Waiting.getLatency();
+
+					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
+					nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
+				}
 			}
 			else
 				break;
@@ -285,8 +282,12 @@ void Scheduler::Simulate()
 			if (X_Waiting.cancel(cancelledPatient)) 
 			{
 				// TODO : Handle statistics for percentage cancelled patients ??
-				// TODO : Set Status , FT , TT , TW ... 
+				// Set Status , FT , TT , TW ... 
+				Treatment* cancelledTreatment = cancelledPatient->RemoveCurrentTreatment();
 				cancelledPatient->setStatus(FNSH);
+				cancelledPatient->setFT(currentTimestep);
+				cancelledPatient->setTT(cancelledPatient->getTT() - cancelledTreatment->getDuration());
+				cancelledPatient->setTW();
 				finishedPatients.push(cancelledPatient);	
 			}
 		}
