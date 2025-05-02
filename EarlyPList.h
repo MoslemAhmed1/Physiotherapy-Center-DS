@@ -47,7 +47,7 @@ public:
 
         patient->reschedule();
 
-        int newPT = Facilities::generateRandomNumber(oldPT, 100);
+        int newPT = Facilities::generateRandomNumber(oldPT, 250);
         patient->setPT(newPT);
         // Re-enqueue the patient with the new priority
         enqueue(patient, -newPT);

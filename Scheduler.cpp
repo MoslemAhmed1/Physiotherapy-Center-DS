@@ -151,7 +151,6 @@ void Scheduler::Simulate()
 					}
 				}
 				// Handle deleting the required treatment
-				nextPatient->getCurrTreatment()->setResource(nullptr);
 				Treatment* treatment = nextPatient->RemoveCurrentTreatment();
 
 				// Patient has finished all his treatments
@@ -277,7 +276,7 @@ void Scheduler::Simulate()
 		leavingTime = 0;
 		availableResource = nullptr;
 
-		// 4- Intreatment to (Finish/Wait)
+		
 		
 
 
