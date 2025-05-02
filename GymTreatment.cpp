@@ -25,11 +25,17 @@ void GymTreatment::setResource(Resource* r)
 	{
 		rPtr->incrementCurrPatients(1);
 	}
-	else
+	resourcePtr = rPtr;
+}
+
+void GymTreatment::removeResource()
+{
+	GymResource* rPtr = dynamic_cast<GymResource*>(resourcePtr);
+	if (rPtr)
 	{
 		rPtr->incrementCurrPatients(-1);
 	}
-	resourcePtr = rPtr;
+	resourcePtr = nullptr;
 }
 
 bool GymTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) {

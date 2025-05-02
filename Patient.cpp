@@ -75,7 +75,7 @@ void Patient::generateTreatments(int numT, ifstream& inFile)
 			treatment = nullptr;
 			break;
 		}
-
+		setTT(getTT() + duration); // Set the total treatment time
 	}
 }
 
@@ -170,9 +170,10 @@ Treatment* Patient::RemoveCurrentTreatment()
 	Treatment* treatment = nullptr;
 	if (RequiredTreatment.dequeue(treatment))
 	{
-		return treatment;
+		treatment->removeResource();
 	}
-	return nullptr;
+
+	return treatment;
 }
 
 // Use operator overloading for printing
