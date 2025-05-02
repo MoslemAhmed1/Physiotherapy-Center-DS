@@ -10,6 +10,8 @@ public:
 
 	GymResource(int cap);
 
+	GymResource(const GymResource& other);
+
 	void incrementCurrPatients(int num);
 
 	int getCurrPatients() const;

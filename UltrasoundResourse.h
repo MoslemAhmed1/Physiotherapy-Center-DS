@@ -8,6 +8,7 @@ private:
 
 public:
 	UltrasoundResourse();
+	UltrasoundResourse(const UltrasoundResourse& other);
 
 	void PrintInfo(ostream& os) const;
 	

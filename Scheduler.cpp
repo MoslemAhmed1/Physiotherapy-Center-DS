@@ -254,7 +254,6 @@ void Scheduler::Simulate()
 				{
 					nextPatient->setStatus(FNSH);
 					nextPatient->setFT(currentTimestep);
-					nextPatient->setTT(nextPatient->getTT() - treatment->getDuration());
 					nextPatient->setTW();
 					finishedPatients.push(nextPatient);
 				}
@@ -487,13 +486,31 @@ bool Scheduler::generateOutputFile() {
 	}
 	outFile << "\nTotal number of timesteps = " << currentTimestep;
 	outFile << "\nTotal number of all, N, and R patients = " << allPatientsCount << ", " << nNum << ", " << rNum;
- 	outFile << "\nAverage total waiting time for all, N, and R patients = " << double(allWT) / allPatientsCount << ", " << double(nWT) / nNum << ", " << double(rWT) / rNum;
-	outFile << "\nAverage total treatment time for all, N, and R patients = " << double(allTT) / allPatientsCount << ", " << double(nTT) / nNum << ", " << double(rTT) / rNum;
-	outFile << "\nPercentage of patients of an accepted cancellation (%) = " << double(cancelledNum) / allPatientsCount * 100 << '%';
-	outFile << "\nPercentage of patients of an accepted rescheduling (%) = " << double(rescheduledNum) / allPatientsCount * 100 << '%';
-	outFile << "\nPercentage of early patients (%) = " << float(earlyNum) / allPatientsCount * 100 << '%';
-	outFile << "\nPercentage of late patients (%) = " << float(lateNum) / allPatientsCount * 100 << '%';
-	outFile << "\nAverage late penalty = " << float(totalPenaltyTime) / lateNum;
+	outFile << "\nAverage total waiting time for all, N, and R patients = "
+		<< (allPatientsCount == 0 ? 0.0 : static_cast<double>(allWT) / allPatientsCount) << ", "
+		<< (nNum == 0 ? 0.0 : static_cast<double>(nWT) / nNum) << ", "
+		<< (rNum == 0 ? 0.0 : static_cast<double>(rWT) / rNum);
+
+	outFile << "\nAverage total treatment time for all, N, and R patients = "
+		<< (allPatientsCount == 0 ? 0.0 : static_cast<double>(allTT) / allPatientsCount) << ", "
+		<< (nNum == 0 ? 0.0 : static_cast<double>(nTT) / nNum) << ", "
+		<< (rNum == 0 ? 0.0 : static_cast<double>(rTT) / rNum);
+
+	outFile << "\nPercentage of patients of an accepted cancellation (%) = "
+		<< (allPatientsCount == 0 ? 0.0 : static_cast<double>(cancelledNum) / allPatientsCount * 100) << '%';
+
+	outFile << "\nPercentage of patients of an accepted rescheduling (%) = "
+		<< (allPatientsCount == 0 ? 0.0 : static_cast<double>(rescheduledNum) / allPatientsCount * 100) << '%';
+
+	outFile << "\nPercentage of early patients (%) = "
+		<< (allPatientsCount == 0 ? 0.0f : static_cast<float>(earlyNum) / allPatientsCount * 100) << '%';
+
+	outFile << "\nPercentage of late patients (%) = "
+		<< (allPatientsCount == 0 ? 0.0f : static_cast<float>(lateNum) / allPatientsCount * 100) << '%';
+
+	outFile << "\nAverage late penalty = "
+		<< (lateNum == 0 ? 0.0f : static_cast<float>(totalPenaltyTime) / lateNum);
+
 }
 
 void Scheduler::loadDevices()

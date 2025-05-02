@@ -9,6 +9,14 @@ GymResource::GymResource(int cap) : Resource()
 	number++;
 }
 
+GymResource::GymResource(const GymResource& other) : Resource(other) {
+	currentPatients = other.currentPatients;
+	capacity = other.capacity;
+	RID = number;
+	RType = GYM;
+	number++;
+}
+
 void GymResource::incrementCurrPatients(int num)
 {
 	currentPatients += num;

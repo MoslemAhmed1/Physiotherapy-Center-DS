@@ -73,8 +73,7 @@ bool LinkedQueue<T>::enqueue(const T& newEntry)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-bool LinkedQueue<T>::dequeue(T& frntEntry)
-{
+bool LinkedQueue<T>::dequeue(T& frntEntry) {
 	if (isEmpty())
 		return false;
 
@@ -86,6 +85,7 @@ bool LinkedQueue<T>::dequeue(T& frntEntry)
 		backPtr = nullptr;
 
 	delete nodeToDeletePtr;
+	nodeToDeletePtr = nullptr;
 	count--;
 	return true;
 }
