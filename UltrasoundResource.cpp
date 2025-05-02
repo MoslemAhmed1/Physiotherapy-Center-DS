@@ -7,6 +7,12 @@ UltrasoundResourse::UltrasoundResourse() : Resource()
 	number++;
 }
 
+UltrasoundResourse::UltrasoundResourse(const UltrasoundResourse& other) : Resource(other) {
+	RID = number;
+	RType = ULTRASOUND;
+	number++;
+}
+
 void UltrasoundResourse::PrintInfo(ostream& os) const
 {
 	os << RID;

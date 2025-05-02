@@ -37,6 +37,9 @@ protected:
 
 	int treatmentFinish;
 
+	// Flags to know wether or not the patient cancelled and/or rescheduled
+	bool fCancelled, fRescheduled;
+
 	PATIENT_TYPE PType;	// Either normal or a recovering patient
 	// Normal Patient : this patient must perform the required treatments 
 	//					in the same order given in the input file.
@@ -75,20 +78,36 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	int getPID() const;
+
 	int getPT() const;
 	void setPT(int newPT);
+	
 	int getVT() const;
+	
 	void setPriority(int pri);
 	int getPriority();
+	
 	bool lastTreatment();
+	
 	void setCurrentDuration(int duration);
 	int getCurrentDuration() const;
+	
 	void setTT(int totalTreatmenttime);
 	int getTT();
+	
 	void setTW();
 	int getTW();
+	
 	void setFT(int finishTime);
 	int getFT();
+
+	void cancel();
+	bool cancelled();
+
+	void reschedule();
+	bool rescheduled();
+
+	PATIENT_TYPE getType();
 
 
 	// Get the current Treatement to assign the resource to it

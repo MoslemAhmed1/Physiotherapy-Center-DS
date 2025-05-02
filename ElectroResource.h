@@ -8,7 +8,7 @@ private:
 
 public:
 	ElectroResource();
-	
+	ElectroResource(const ElectroResource& other);
 
 	void PrintInfo(ostream& os) const;
 

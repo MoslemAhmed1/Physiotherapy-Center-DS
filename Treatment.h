@@ -19,9 +19,22 @@ public:
 		resourcePtr = nullptr;
 	}
 
-	void setResource(Resource* r) 
+	virtual void setResource(Resource* r) 
 	{
 		resourcePtr = r;
+	}
+
+	virtual void removeResource()
+	{
+		if (resourcePtr)
+		{
+			resourcePtr = nullptr;
+		}
+	}
+
+	Resource* getResource() const
+	{
+		return resourcePtr;
 	}
 
 	virtual bool CanAssign(Resource* recource) = 0;

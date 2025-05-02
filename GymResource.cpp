@@ -9,14 +9,27 @@ GymResource::GymResource(int cap) : Resource()
 	number++;
 }
 
-void GymResource::setCurrPatients(int num)
+GymResource::GymResource(const GymResource& other) : Resource(other) {
+	currentPatients = other.currentPatients;
+	capacity = other.capacity;
+	RID = number;
+	RType = GYM;
+	number++;
+}
+
+void GymResource::incrementCurrPatients(int num)
 {
-	currentPatients = num;
+	currentPatients += num;
 }
 
 int GymResource::getCurrPatients() const
 {
 	return currentPatients;
+}
+
+int GymResource::getCapacity() const
+{
+	return capacity;
 }
 
 void GymResource::PrintInfo(ostream& os) const

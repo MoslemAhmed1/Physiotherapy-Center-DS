@@ -9,6 +9,8 @@ Patient::Patient(char type, int PT, int VT) : PT(PT), VT(VT)
 	currentDuration = 0;
 	treatmentFinish = 0;
 	numPatients++;
+	fCancelled = false;
+	fRescheduled = false;
 }
 
 void Patient::setType(char type)
@@ -73,7 +75,7 @@ void Patient::generateTreatments(int numT, ifstream& inFile)
 			treatment = nullptr;
 			break;
 		}
-
+		setTT(getTT() + duration); // Set the total treatment time
 	}
 }
 
@@ -130,6 +132,28 @@ void Patient::setFT(int finishTime) { FT = finishTime; }
 int Patient::getFT() { return FT; }
 
 
+void Patient::cancel() {
+	fCancelled = true;
+}
+
+bool Patient::cancelled() {
+	return fCancelled;
+}
+
+void Patient::reschedule() {
+	fRescheduled = true;
+}
+
+bool Patient::rescheduled() {
+	return fRescheduled;
+}
+
+PATIENT_TYPE Patient::getType() {
+	return PType;
+}
+
+
+
 // Get the current Treatement to assign the resource to it
 Treatment* Patient::getCurrTreatment()
 {
@@ -146,9 +170,10 @@ Treatment* Patient::RemoveCurrentTreatment()
 	Treatment* treatment = nullptr;
 	if (RequiredTreatment.dequeue(treatment))
 	{
-		return treatment;
+		treatment->removeResource();
 	}
-	return nullptr;
+
+	return treatment;
 }
 
 // Use operator overloading for printing

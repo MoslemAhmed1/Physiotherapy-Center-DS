@@ -5,18 +5,20 @@ int ElectroTreatment::number = 1;  // Define static variable ONLY HERE
 
 ElectroTreatment::ElectroTreatment(int time) : Treatment(time) {}
 
-TREATMENT_TYPE ElectroTreatment::getType() {
+TREATMENT_TYPE ElectroTreatment::getType() 
+{
     return ELECTROTREATMENT;
 }
 
-bool ElectroTreatment::CanAssign(Resource* resource) {
+bool ElectroTreatment::CanAssign(Resource* resource) 
+{
     return (resource != nullptr);
 }
 
-bool ElectroTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) {
-    if (waitPatient && scheduler) 
-    {
-        scheduler->add_E_waiting(waitPatient);
+bool ElectroTreatment::MoveToWait(Scheduler* scheduler, Patient* waitPatient) 
+{
+    if (waitPatient && scheduler) {
+        scheduler->AddToWait_E(waitPatient);
         return true;
     }
     return false;

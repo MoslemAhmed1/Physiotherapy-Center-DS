@@ -13,6 +13,8 @@ public:
 
 	Resource(){}
 
+	Resource(const Resource& other) {}
+
 	int getRID() { return RID; }
 
 	RESOURCE_TYPE getType() { return RType; }

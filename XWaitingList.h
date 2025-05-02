@@ -33,16 +33,19 @@ public:
         if (patientPtr->lastTreatment())
         {
             patientPtr->setStatus(FNSH);
+            patientPtr->cancel(); // sets fCancelled to true
 
             if (frontPtr == backPtr) // The list has only one patient
             {
                 frontPtr = backPtr = nullptr;
+                currentPtr->setNext(nullptr); // Added
                 delete currentPtr;
             }
 
             else if (prevPtr == nullptr)    // The patient is at the head
             {
                 frontPtr = currentPtr->getNext();
+                currentPtr->setNext(nullptr); // Added
                 delete currentPtr;
 
             }
@@ -50,15 +53,16 @@ public:
             {
                 backPtr = prevPtr;
                 prevPtr->setNext(currentPtr->getNext());
+                currentPtr->setNext(nullptr); // Added
                 delete currentPtr;
             }
             else // The patient is somewhere in the middle
             {
                 prevPtr->setNext(currentPtr->getNext());
+                currentPtr->setNext(nullptr); // Added
                 delete currentPtr;
             }
 
-            currentPtr->setNext(nullptr); // Added
             treatmentLatency -= patientPtr->getCurrentDuration();
             patient = patientPtr;
             // clear the pointer to avoid dangling reference

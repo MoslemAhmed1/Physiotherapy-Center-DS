@@ -128,6 +128,9 @@
     <ClCompile Include="Patient.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Input\DSTest.txt">
@@ -144,6 +147,12 @@
     </Text>
     <Text Include="Input\Test2.txt">
       <Filter>Input</Filter>
+    </Text>
+    <Text Include="Output\Dummy.txt">
+      <Filter>Output</Filter>
+    </Text>
+    <Text Include="Output\Single.txt">
+      <Filter>Output</Filter>
     </Text>
   </ItemGroup>
 </Project>

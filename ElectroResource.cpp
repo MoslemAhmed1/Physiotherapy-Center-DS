@@ -7,6 +7,12 @@ ElectroResource::ElectroResource() : Resource()
 	number++;
 }
 
+ElectroResource::ElectroResource(const ElectroResource& other) : Resource(other) {
+	RID = number;
+	RType = ELECTRO;
+	number++;
+}
+
 void ElectroResource::PrintInfo(ostream& os) const
 {
 	os << RID;
