@@ -490,7 +490,7 @@ bool Scheduler::generateOutputFile() {
 			outFile << 'F';
 		}
 
-
+		outFile << '\n';
 	}
 	outFile << "\nTotal number of timesteps = " << currentTimestep;
 	outFile << "\nTotal number of all, N, and R patients = " << allPatientsCount << ", " << nNum << ", " << rNum;
