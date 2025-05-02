@@ -122,6 +122,62 @@ void Scheduler::Simulate()
 			// leavingTime = 0; // Not needed
 		}
 
+		while (inTreatmentPatients.peek(nextPatient, leavingTime))
+		{
+			leavingTime = -leavingTime;
+			if (leavingTime == currentTimestep)
+			{
+				inTreatmentPatients.dequeue(nextPatient, leavingTime);
+
+				// Return the patients resource to the available resources list
+				Resource* resourcePtr = nextPatient->getCurrTreatment()->getResource();
+				if (resourcePtr)
+				{
+					if (resourcePtr->getType() == ELECTRO)
+					{
+						availableResourcesE.enqueue(resourcePtr);
+					}
+					else if (resourcePtr->getType() == ULTRASOUND)
+					{
+						availableResourcesU.enqueue(resourcePtr);
+					}
+					else if (resourcePtr->getType() == GYM)
+					{
+						GymResource* gymResource = dynamic_cast<GymResource*>(resourcePtr);
+						if (gymResource && (gymResource->getCurrPatients() == gymResource->getCapacity()))
+						{
+							availableResourcesX.enqueue(resourcePtr);
+						}
+					}
+				}
+				// Handle deleting the required treatment
+				nextPatient->getCurrTreatment()->setResource(nullptr);
+				Treatment* treatment = nextPatient->RemoveCurrentTreatment();
+
+				// Patient has finished all his treatments
+				if (!nextPatient->getCurrTreatment())
+				{
+					nextPatient->setStatus(FNSH);
+					nextPatient->setFT(currentTimestep);
+					nextPatient->setTW();
+					finishedPatients.push(nextPatient);
+				}
+				else // Move patient to the next waiting list
+				{
+					int E_Latency = E_Waiting.getLatency();
+					int U_Latency = U_Waiting.getLatency();
+					int X_Latency = X_Waiting.getLatency();
+
+					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
+					nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
+				}
+			}
+			else
+				break;
+			// leavingTime = 0; // Not needed
+		}
+
+
 		nextPatient = nullptr;
 		leavingTime = 0;
 		Resource* availableResource = nullptr;
@@ -147,6 +203,7 @@ void Scheduler::Simulate()
 				else
 					break;
 				// leavingTime = 0; // Not needed
+				availableResource = nullptr;
 			}
 		}
 
@@ -175,6 +232,8 @@ void Scheduler::Simulate()
 				else
 					break;
 				// leavingTime = 0; // Not needed
+				availableResource = nullptr;
+
 			}
 		}
 
@@ -209,6 +268,8 @@ void Scheduler::Simulate()
 				else
 					break;
 				// leavingTime = 0; // Not needed
+				availableResource = nullptr;
+
 			}
 		}
 
@@ -217,60 +278,7 @@ void Scheduler::Simulate()
 		availableResource = nullptr;
 
 		// 4- Intreatment to (Finish/Wait)
-		while (inTreatmentPatients.peek(nextPatient, leavingTime))
-		{
-			leavingTime = -leavingTime;
-			if (leavingTime == currentTimestep)
-			{
-				inTreatmentPatients.dequeue(nextPatient, leavingTime);
-
-				// Return the patients resource to the available resources list
-				Resource* resourcePtr = nextPatient->getCurrTreatment()->getResource();
-				if (resourcePtr)
-				{
-					if (resourcePtr->getType() == ELECTRO)
-					{
-						availableResourcesE.enqueue(resourcePtr);
-					}
-					else if (resourcePtr->getType() == ULTRASOUND)
-					{
-						availableResourcesU.enqueue(resourcePtr);
-					}
-					else if (resourcePtr->getType() == GYM)
-					{
-						GymResource* gymResource = dynamic_cast<GymResource*>(resourcePtr);
-						if (gymResource && (gymResource->getCurrPatients() == gymResource->getCapacity()))
-						{
-							availableResourcesX.enqueue(resourcePtr);
-						}
-					}
-				}
-				// Handle deleting the required treatment
-				nextPatient->getCurrTreatment()->setResource(nullptr);
-				Treatment* treatment = nextPatient->RemoveCurrentTreatment();
-
-				// Patient has finished all his treatments
-				if (!nextPatient->getCurrTreatment()) 
-				{
-					nextPatient->setStatus(FNSH);
-					nextPatient->setFT(currentTimestep);
-					nextPatient->setTW();
-					finishedPatients.push(nextPatient);
-				}
-				else // Move patient to the next waiting list
-				{
-					int E_Latency = E_Waiting.getLatency();
-					int U_Latency = U_Waiting.getLatency();
-					int X_Latency = X_Waiting.getLatency();
-
-					nextPatient->reorderTreatments(E_Latency, U_Latency, X_Latency);
-					nextPatient->getCurrTreatment()->MoveToWait(this, nextPatient);
-				}
-			}
-			else
-				break;
-			// leavingTime = 0; // Not needed
-		}
+		
 
 
 		// 4.1- Cancellation
