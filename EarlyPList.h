@@ -49,9 +49,8 @@ public:
 
         int newPT = Facilities::generateRandomNumber(oldPT, 100);
         patient->setPT(newPT);
-        patient->setPriority(-newPT);
         // Re-enqueue the patient with the new priority
-        enqueue(patient, newPT);
+        enqueue(patient, -newPT);
 
         return true;
     }
