@@ -415,7 +415,7 @@ bool Scheduler::loadInputFile()
 }
 
 bool Scheduler::generateOutputFile() {
-	string filename = "Output";
+	string filename = "Output/";
 	filename += pUI->getFileName();
 	// Reads the filename and appends .txt to it if it has length <= 4 or isn't a text file
 	if (filename.length() <= 4 || filename.substr(filename.length() - 4) != ".txt") {
@@ -486,8 +486,8 @@ bool Scheduler::generateOutputFile() {
 	}
 	outFile << "\nTotal number of timesteps = " << currentTimestep;
 	outFile << "\nTotal number of all, N, and R patients = " << allPatientsCount << ", " << nNum << ", " << rNum;
- 	outFile << "\nAverage total waiting time for all, N, and R patients = " << double(allWT) / allPatientsCount << double(nWT) / nNum << double(rWT) / rNum;
-	outFile << "\nAverage total treatment time for all, N, and R patients = " << double(allTT) / allPatientsCount << double(nTT) / nNum << double(rTT) / rNum;
+ 	outFile << "\nAverage total waiting time for all, N, and R patients = " << double(allWT) / allPatientsCount << ", " << double(nWT) / nNum << ", " << double(rWT) / rNum;
+	outFile << "\nAverage total treatment time for all, N, and R patients = " << double(allTT) / allPatientsCount << ", " << double(nTT) / nNum << ", " << double(rTT) / rNum;
 	outFile << "\nPercentage of patients of an accepted cancellation (%) = " << double(cancelledNum) / allPatientsCount * 100 << '%';
 	outFile << "\nPercentage of patients of an accepted rescheduling (%) = " << double(rescheduledNum) / allPatientsCount * 100 << '%';
 	outFile << "\nPercentage of early patients (%) = " << float(earlyNum) / allPatientsCount * 100 << '%';
