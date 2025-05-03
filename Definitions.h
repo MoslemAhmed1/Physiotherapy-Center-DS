@@ -38,10 +38,11 @@ enum TREATMENT_TYPE
 	GYMTREATMENT
 };
 
-enum
-{
+enum {
 	// Instead of using a global variable or the #define directive
-	MAX_SIZE = 1000
+	MAX_SIZE = 1000,
+	MAX_RESCHEDULE_TIME = 100,
+	MAX_RESCHEDULES = 3
 };
 
 enum ERR_ID
