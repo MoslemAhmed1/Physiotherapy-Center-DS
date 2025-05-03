@@ -45,9 +45,13 @@ public:
         Patient* patient = currentPtr->getItem(oldPT);
         oldPT = patient->getPT();
 
-        patient->reschedule();
 
-        int newPT = Facilities::generateRandomNumber(oldPT, 250);
+        // Add a hard limit of 10000 for reschduling (if rescheduled time is > 10000 ignore)
+        int newPT = oldPT;
+        if (patient->getNumReschedules() <= 3) {
+            newPT = Facilities::generateRandomNumber(oldPT, oldPT + 50);
+            patient->reschedule();
+        }
         patient->setPT(newPT);
         // Re-enqueue the patient with the new priority
         enqueue(patient, -newPT);

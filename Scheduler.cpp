@@ -481,7 +481,7 @@ bool Scheduler::generateOutputFile() {
 
 		// Resc
 		outFile << '\t';
-		if (toPrint->rescheduled()) {
+		if (toPrint->getNumReschedules() != 0) {
 			rescheduledNum++;
 			outFile << 'T';
 		}

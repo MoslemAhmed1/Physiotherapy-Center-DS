@@ -10,7 +10,7 @@ Patient::Patient(char type, int PT, int VT) : PT(PT), VT(VT)
 	treatmentFinish = 0;
 	numPatients++;
 	fCancelled = false;
-	fRescheduled = false;
+	numReschedules = 0;
 }
 
 void Patient::setType(char type)
@@ -141,11 +141,11 @@ bool Patient::cancelled() {
 }
 
 void Patient::reschedule() {
-	fRescheduled = true;
+	numReschedules++;
 }
 
-bool Patient::rescheduled() {
-	return fRescheduled;
+int Patient::getNumReschedules() {
+	return numReschedules;
 }
 
 PATIENT_TYPE Patient::getType() {

@@ -38,7 +38,8 @@ protected:
 	int treatmentFinish;
 
 	// Flags to know wether or not the patient cancelled and/or rescheduled
-	bool fCancelled, fRescheduled;
+	bool fCancelled;
+	int numReschedules;
 
 	PATIENT_TYPE PType;	// Either normal or a recovering patient
 	// Normal Patient : this patient must perform the required treatments 
@@ -105,7 +106,7 @@ public:
 	bool cancelled();
 
 	void reschedule();
-	bool rescheduled();
+	int getNumReschedules();
 
 	PATIENT_TYPE getType();
 
