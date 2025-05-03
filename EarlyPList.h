@@ -14,7 +14,7 @@ public:
     bool reschedule()
     {
         // Return false if empty list
-        if (isEmpty()) // Changed 
+        if (isEmpty()) 
             return false;
 
         // Choose a random patient position (1 to count)
@@ -46,10 +46,9 @@ public:
         oldPT = patient->getPT();
 
 
-        // Add a hard limit of 10000 for reschduling (if rescheduled time is > 10000 ignore)
         int newPT = oldPT;
         if (patient->getNumReschedules() <= 3) {
-            newPT = Facilities::generateRandomNumber(oldPT, oldPT + 50);
+            newPT = Facilities::generateRandomNumber(oldPT + 1, oldPT + 50);
             patient->reschedule();
         }
         patient->setPT(newPT);

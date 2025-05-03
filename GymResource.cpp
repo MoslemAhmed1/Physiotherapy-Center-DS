@@ -17,7 +17,7 @@ GymResource::GymResource(const GymResource& other) : Resource(other) {
 	number++;
 }
 
-void GymResource::incrementCurrPatients(int num)
+void GymResource::changeCurrPatients(int num)
 {
 	currentPatients += num;
 }

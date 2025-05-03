@@ -12,7 +12,7 @@ public:
 
 	GymResource(const GymResource& other);
 
-	void incrementCurrPatients(int num);
+	void changeCurrPatients(int num);
 
 	int getCurrPatients() const;
 

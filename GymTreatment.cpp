@@ -23,7 +23,7 @@ void GymTreatment::setResource(Resource* r)
 	GymResource* rPtr = dynamic_cast<GymResource*>(r);
 	if (rPtr)
 	{
-		rPtr->incrementCurrPatients(1);
+		rPtr->changeCurrPatients(1);
 	}
 	resourcePtr = rPtr;
 }
@@ -33,7 +33,7 @@ void GymTreatment::removeResource()
 	GymResource* rPtr = dynamic_cast<GymResource*>(resourcePtr);
 	if (rPtr)
 	{
-		rPtr->incrementCurrPatients(-1);
+		rPtr->changeCurrPatients(-1);
 	}
 	resourcePtr = nullptr;
 }
