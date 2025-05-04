@@ -315,7 +315,9 @@ void Scheduler::Simulate()
 
 			bool proceed = pUI->proceed();
 			if (!proceed)
-				break;
+				opMode = SILENT; // Change operation mode to silent
+								 // This still produces the output file.
+								 // Under the assumption that the user pressed esc to skip the interactive mode
 		}
 
 		currentTimestep++;
@@ -491,6 +493,7 @@ bool Scheduler::generateOutputFile() {
 
 		outFile << '\n';
 	}
+
 	outFile << "\nTotal number of timesteps = " << currentTimestep;
 	outFile << "\nTotal number of all, N, and R patients = " << allPatientsCount << ", " << nNum << ", " << rNum;
 	outFile << "\nAverage total waiting time for all, N, and R patients = "
