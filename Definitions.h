@@ -41,7 +41,7 @@ enum TREATMENT_TYPE
 enum {
 	// Instead of using a global variable or the #define directive
 	MAX_SIZE = 1000,
-	MAX_RESCHEDULE_TIME = 100,
+	MAX_RESCHEDULE_TIME = 50,
 	MAX_RESCHEDULES = 3
 };
 

@@ -48,7 +48,7 @@ public:
 
 
         int newPT = oldPT;
-
+        rand();
         if (patient->getNumReschedules() <= MAX_RESCHEDULES) {
             newPT = Facilities::generateRandomNumber(oldPT, oldPT + MAX_RESCHEDULE_TIME);
             patient->reschedule(); // Adds the number of reschedules

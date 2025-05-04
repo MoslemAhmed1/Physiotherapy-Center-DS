@@ -1,0 +1,71 @@
+PID	PType	PT	VT	FT	WT	TT	Cancel	Resc
+P60	R	220	80	240	140	20	F	T
+P28	R	186	40	198	146	12	F	T
+P4	R	150	10	187	140	37	F	T
+P27	N	159	40	186	119	27	F	T
+P3	N	155	10	182	145	27	F	T
+P12	R	148	20	180	130	30	F	T
+P23	N	161	35	171	126	10	F	T
+P11	N	104	20	162	105	37	F	T
+P52	R	80	70	162	50	42	F	F
+P59	N	116	80	159	39	40	F	T
+P56	R	85	75	144	57	12	F	F
+P40	R	73	55	132	40	37	F	T
+P47	N	75	65	132	27	40	F	F
+P16	R	102	25	128	91	12	F	T
+P36	R	60	50	122	30	42	F	F
+P55	N	85	75	118	21	22	F	F
+P48	R	75	65	117	32	20	F	F
+P57	N	80	80	107	12	15	F	F
+P39	N	65	55	106	24	27	F	F
+P31	N	55	45	105	23	37	F	F
+P32	R	67	45	102	32	25	F	T
+P44	R	70	60	96	24	12	T	F
+P51	N	94	70	94	24	0	T	T
+P54	R	75	75	94	7	12	F	F
+P43	N	70	60	92	22	10	F	F
+P49	N	70	70	92	10	12	F	F
+P24	R	45	35	89	12	42	F	F
+P45	N	65	65	82	2	15	F	F
+P15	N	35	25	82	15	42	F	F
+P53	N	75	75	81	6	0	T	F
+P58	R	80	80	80	0	0	T	F
+P46	R	65	65	80	5	10	F	F
+P20	R	40	30	77	12	35	F	F
+P19	N	40	30	75	18	27	F	F
+P35	N	60	50	74	14	10	F	F
+P50	R	70	70	70	0	0	T	F
+P37	N	55	55	70	0	15	F	F
+P38	R	55	55	67	0	12	F	F
+P34	R	50	50	67	2	15	F	F
+P42	R	60	60	62	2	0	T	F
+P33	N	50	50	62	2	10	F	F
+P41	N	60	60	61	1	0	T	F
+P25	N	40	40	55	0	15	F	F
+P26	R	40	40	52	0	12	F	F
+P7	N	25	15	52	10	27	F	F
+P30	R	45	45	47	2	0	T	F
+P29	N	45	45	45	0	0	T	F
+P17	N	30	30	42	0	12	F	F
+P13	N	25	25	40	0	15	F	F
+P14	R	25	25	37	0	12	F	F
+P22	R	35	35	36	1	0	T	F
+P21	N	35	35	35	0	0	T	F
+P8	R	25	15	35	10	10	F	F
+P18	R	30	30	31	1	0	T	F
+P5	N	15	15	27	0	12	F	F
+P6	R	15	15	25	0	10	F	F
+P1	N	10	10	25	0	15	F	F
+P2	R	10	10	22	0	12	F	F
+P9	N	20	20	21	1	0	T	F
+P10	R	20	20	20	0	0	T	F
+
+Total number of timesteps = 240
+Total number of all, N, and R patients = 60, 30, 30
+Average total waiting time for all, N, and R patients = 28.8667, 25.5333, 32.2
+Average total treatment time for all, N, and R patients = 16.7, 17.3, 16.1
+Percentage of patients of an accepted cancellation (%) = 23.3333%
+Percentage of patients of an accepted rescheduling (%) = 21.6667%
+Percentage of early patients (%) = 50%
+Percentage of late patients (%) = 0%
+Average late penalty = 0

@@ -1,0 +1,61 @@
+PID	PType	PT	VT	FT	WT	TT	Cancel	Resc
+P12	R	192	11	222	181	30	F	T
+P2	N	169	1	204	168	35	F	T
+P7	N	163	6	175	157	12	F	T
+P16	R	134	15	167	119	33	F	T
+P9	N	71	8	163	128	27	F	T
+P34	R	138	32	161	106	23	F	T
+P5	N	66	4	156	115	37	F	T
+P49	N	131	45	154	86	23	F	T
+P41	N	49	39	143	92	12	F	F
+P19	R	44	18	141	86	37	F	F
+P28	R	48	26	136	85	25	F	F
+P30	R	43	28	136	73	35	F	T
+P36	R	43	34	131	60	37	F	F
+P48	R	40	44	123	49	30	F	F
+P46	R	98	42	123	56	25	F	T
+P38	N	46	36	122	68	18	F	F
+P23	N	43	21	119	83	15	F	F
+P27	N	35	25	116	56	35	F	F
+P31	N	41	29	111	54	28	F	F
+P43	R	42	40	109	47	22	F	F
+P8	N	38	7	108	68	33	F	F
+P45	N	36	41	108	32	35	F	F
+P33	N	37	31	104	43	30	F	F
+P25	N	38	23	104	54	27	F	F
+P50	R	30	46	98	40	12	F	F
+P40	N	34	38	96	35	23	F	F
+P42	R	27	40	87	14	33	F	F
+P39	N	19	37	87	13	37	F	F
+P15	R	36	14	86	45	27	F	F
+P11	R	32	10	82	47	25	F	F
+P47	N	25	43	81	20	18	F	F
+P22	R	30	20	81	33	28	F	F
+P4	N	35	3	79	51	25	F	F
+P44	R	18	40	78	18	20	F	F
+P20	R	29	19	73	31	23	F	F
+P35	N	28	33	71	18	20	F	F
+P24	R	26	22	67	15	30	F	F
+P6	N	28	5	67	34	28	F	T
+P37	N	31	35	64	11	18	F	F
+P29	N	22	27	61	14	20	F	F
+P21	N	17	20	58	1	37	F	F
+P18	R	33	17	51	16	18	F	F
+P17	R	21	16	49	11	22	F	F
+P32	R	24	30	48	3	15	F	F
+P14	R	27	13	47	14	20	F	F
+P13	R	19	12	46	9	25	F	F
+P3	N	25	2	43	23	18	F	F
+P10	N	23	9	41	14	18	F	F
+P1	N	12	1	37	11	25	F	F
+P26	R	20	24	36	2	10	F	F
+
+Total number of timesteps = 222
+Total number of all, N, and R patients = 50, 26, 24
+Average total waiting time for all, N, and R patients = 52.18, 55.7308, 48.3333
+Average total treatment time for all, N, and R patients = 25.18, 25.1538, 25.2083
+Percentage of patients of an accepted cancellation (%) = 0%
+Percentage of patients of an accepted rescheduling (%) = 22%
+Percentage of early patients (%) = 72%
+Percentage of late patients (%) = 28%
+Average late penalty = 4.35714

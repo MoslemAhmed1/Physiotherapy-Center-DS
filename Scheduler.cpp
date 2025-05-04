@@ -290,7 +290,7 @@ void Scheduler::Simulate()
 		}
 		
 		// 5.2- Rescheduling
-		randomNum = Facilities::generateRandomNumber(0, 100);
+		randomNum = Facilities::generateRandomNumber(0,100);
 		if (randomNum < pResc && !earlyPatients.isEmpty())
 		{
 			earlyPatients.reschedule();
@@ -307,6 +307,9 @@ void Scheduler::Simulate()
 			if (!proceed)
 				break;
 		}
+
+		if (finishedPatients.getCount() == allPatientsCount)
+			break;
 
 		currentTimestep++;
 	}
