@@ -11,6 +11,7 @@ Patient::Patient(char type, int PT, int VT) : PT(PT), VT(VT)
 	numPatients++;
 	fCancelled = false;
 	numReschedules = 0;
+	TT = TW = FT = 0;
 }
 
 void Patient::setType(char type)

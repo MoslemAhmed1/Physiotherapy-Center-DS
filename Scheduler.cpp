@@ -96,7 +96,6 @@ void Scheduler::Simulate()
 			}
 			else
 				break;
-			// leavingTime = 0; // Not needed
 		}
 
 		nextPatient = nullptr;
@@ -119,9 +118,9 @@ void Scheduler::Simulate()
 			}
 			else
 				break;
-			// leavingTime = 0; // Not needed
 		}
 
+		// 3- InTreatment to Finish / Wait
 		while (inTreatmentPatients.peek(nextPatient, leavingTime))
 		{
 			leavingTime = -leavingTime;
@@ -150,8 +149,9 @@ void Scheduler::Simulate()
 						}
 					}
 				}
+
 				// Handle deleting the required treatment
-				Treatment* treatment = nextPatient->RemoveCurrentTreatment();
+				nextPatient->RemoveCurrentTreatment();
 
 				// Patient has finished all his treatments
 				if (!nextPatient->getCurrTreatment())
@@ -173,15 +173,13 @@ void Scheduler::Simulate()
 			}
 			else
 				break;
-			// leavingTime = 0; // Not needed
 		}
-
 
 		nextPatient = nullptr;
 		leavingTime = 0;
 		Resource* availableResource = nullptr;
 
-		// 3.1- E-Waiting to Intreatment
+		// 4.1- E-Waiting to Intreatment
 		while (E_Waiting.peek(nextPatient))
 		{
 			leavingTime = nextPatient->getPriority();
@@ -201,7 +199,7 @@ void Scheduler::Simulate()
 				}
 				else
 					break;
-				// leavingTime = 0; // Not needed
+
 				availableResource = nullptr;
 			}
 		}
@@ -210,7 +208,7 @@ void Scheduler::Simulate()
 		leavingTime = 0;
 		availableResource = nullptr;
 
-		// 3.2- U-Waiting to Intreatment
+		// 4.2- U-Waiting to Intreatment
 		while (U_Waiting.peek(nextPatient))
 		{
 			leavingTime = nextPatient->getPriority();
@@ -230,9 +228,8 @@ void Scheduler::Simulate()
 				}
 				else
 					break;
-				// leavingTime = 0; // Not needed
-				availableResource = nullptr;
 
+				availableResource = nullptr;
 			}
 		}
 
@@ -240,7 +237,7 @@ void Scheduler::Simulate()
 		leavingTime = 0;
 		availableResource = nullptr;
 
-		// 3.3- X-Waiting to Intreatment
+		// 4.3- X-Waiting to Intreatment
 		while (X_Waiting.peek(nextPatient))
 		{
 			leavingTime = nextPatient->getPriority();
@@ -266,9 +263,8 @@ void Scheduler::Simulate()
 				}
 				else
 					break;
-				// leavingTime = 0; // Not needed
-				availableResource = nullptr;
 
+				availableResource = nullptr;
 			}
 		}
 
@@ -276,18 +272,13 @@ void Scheduler::Simulate()
 		leavingTime = 0;
 		availableResource = nullptr;
 
-		
-		
-
-
-		// 4.1- Cancellation
+		// 5.1- Cancellation
 		int randomNum = Facilities::generateRandomNumber(0, 100);
 		if (randomNum < pCancel && !X_Waiting.isEmpty())
 		{
 			Patient* cancelledPatient = nullptr;
 			if (X_Waiting.cancel(cancelledPatient)) 
 			{
-				// TODO : Handle statistics for percentage cancelled patients ??
 				// Set Status , FT , TT , TW ... 
 				Treatment* cancelledTreatment = cancelledPatient->RemoveCurrentTreatment();
 				cancelledPatient->setStatus(FNSH);
@@ -298,11 +289,10 @@ void Scheduler::Simulate()
 			}
 		}
 		
-		// 4.2- Rescheduling
+		// 5.2- Rescheduling
 		randomNum = Facilities::generateRandomNumber(0, 100);
 		if (randomNum < pResc && !earlyPatients.isEmpty())
 		{
-			// TODO : Handle statistics for percentage rescheduled patients ??
 			earlyPatients.reschedule();
 		}
 		

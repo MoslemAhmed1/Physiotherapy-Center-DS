@@ -158,7 +158,6 @@
     <ClCompile Include="GymTreatment.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Patient.cpp" />
-    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="UltrasoundResource.cpp" />
     <ClCompile Include="UltraTreatment.cpp" />

@@ -113,9 +113,6 @@
     <ClCompile Include="UltraTreatment.cpp">
       <Filter>Header Files\Treatment</Filter>
     </ClCompile>
-    <ClCompile Include="Scheduler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ElectroResource.cpp">
       <Filter>Header Files\Resource</Filter>
     </ClCompile>
@@ -128,8 +125,8 @@
     <ClCompile Include="Patient.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Scheduler.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

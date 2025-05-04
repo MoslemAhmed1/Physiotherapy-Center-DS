@@ -38,14 +38,14 @@ public:
             if (frontPtr == backPtr) // The list has only one patient
             {
                 frontPtr = backPtr = nullptr;
-                currentPtr->setNext(nullptr); // Added
+                currentPtr->setNext(nullptr); 
                 delete currentPtr;
             }
 
             else if (prevPtr == nullptr)    // The patient is at the head
             {
                 frontPtr = currentPtr->getNext();
-                currentPtr->setNext(nullptr); // Added
+                currentPtr->setNext(nullptr); 
                 delete currentPtr;
 
             }
@@ -53,13 +53,13 @@ public:
             {
                 backPtr = prevPtr;
                 prevPtr->setNext(currentPtr->getNext());
-                currentPtr->setNext(nullptr); // Added
+                currentPtr->setNext(nullptr); 
                 delete currentPtr;
             }
             else // The patient is somewhere in the middle
             {
                 prevPtr->setNext(currentPtr->getNext());
-                currentPtr->setNext(nullptr); // Added
+                currentPtr->setNext(nullptr); 
                 delete currentPtr;
             }
 

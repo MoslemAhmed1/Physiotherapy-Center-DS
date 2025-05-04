@@ -61,9 +61,9 @@ public:
 	//			to add to E-Wait and X-Wait. These functions are to be called by Treatment::MoveToWait function
 	//		3- Assign patients to resoures (DONE)
 	//		4- When a patient is done with a treatment move him to Wait/Finish list (DONE)
-	//		5- Collect statistics that are needed to create output file (TODO : George)
+	//		5- Collect statistics that are needed to create output file (DONE)
 	//		6- Call UI class functions to print details on the output screen (DONE)
-	//	- Produce the output file at the end of simulation (TODO : George)
+	//	- Produce the output file at the end of simulation (DONE)
 
 	Scheduler();
 
